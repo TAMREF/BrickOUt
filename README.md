@@ -1,2 +1,2 @@
 # BrickOUt
-Cömen and Slaves
+Kömen and Slaves
