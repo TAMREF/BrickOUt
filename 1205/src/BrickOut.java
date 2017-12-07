@@ -13,12 +13,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-class MyFrame implements KeyListener
-{
+class MyFrame implements KeyListener{
     JFrame frm = new JFrame();
     JTextField tfield = new JTextField();
-    public MyFrame()
-    {
+    public MyFrame(){
         frm.setBounds(300, 300, 300, 300);
         frm.setTitle("keyTest");
         frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,21 +24,16 @@ class MyFrame implements KeyListener
         frm.add(tfield);
         frm.setVisible(true);
     }
-    public void keyPressed(java.awt.event.KeyEvent a) 
-    {
+    public void keyPressed(java.awt.event.KeyEvent a) {
         ShowInfo(a);
     }
-    public void keyReleased(java.awt.event.KeyEvent a) 
-    {
+    public void keyReleased(java.awt.event.KeyEvent a) {
         ShowInfo(a);        
     }
-    public void keyTyped(java.awt.event.KeyEvent a) 
-    {
+    public void keyTyped(java.awt.event.KeyEvent a) {
         ShowInfo(a);
     }
-    
-    protected void ShowInfo(java.awt.event.KeyEvent e)
-    {
+    protected void ShowInfo(java.awt.event.KeyEvent e){
         int keyCode = e.getKeyCode();
         if(keyCode == 37) {
         	System.out.println("left");
