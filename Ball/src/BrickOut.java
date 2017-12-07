@@ -6,10 +6,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+class Point2D{
+	public double x;
+	public double y;
+	Point2D(double x, double y){
+		this.x = x;
+		this.y = y;
+	}
+	Point2D(){
+		this(0.0, 0.0);
+	}
+	double distance() {
+		return Math.sqrt(this.x * this.x + this.y * this.y);
+	}
+	Point topoint() {
+		return new Point((int)(this.x), (int)(this.y));
+	}
+}
 class Ball {
 	int diameter = 40;
-	Point velocity;
-	Point position;
+	Point2D velocity;
+	Point2D position;
 	ImageIcon Ball = new ImageIcon(getClass().getResource("icons/Ball.png"));
 	Image temp = Ball.getImage();
 	Image temp2 = temp.getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH);
@@ -63,20 +80,16 @@ class Ball {
 		return DisBall;
 	}
 
-	Ball(Point pos, Point vel) {
+	Ball(Point2D pos, Point2D vel) {
 		this.position = pos;
 		this.velocity = vel;
-	}
-
-	Ball() {
-		this(new Point(0, 0), new Point(0, 0));
 	}
 
 }
 
 class Brick {
 	public Point size = new Point(100, 50); // (width, height)
-	public Point position;
+	public Point2D position;
 	ImageIcon Brick = new ImageIcon(getClass().getResource("icons/Brick.png"));
 	Image temp = Brick.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
@@ -91,9 +104,9 @@ class Brick {
 
 	}
 	public Brick() {
-		this(new Point(0,0));
+		this(new Point2D(0,0));
 	}
-	public Brick(Point position) {
+	public Brick(Point2D position) {
 		this.position = position;
 	}
 	public boolean checkCol(Ball b) {
@@ -119,12 +132,12 @@ class MultipleLifeBrick extends Brick {
 	public int life;
 	public static int defaultLife = 3;
 
-	public MultipleLifeBrick(int life, Point position) {
+	public MultipleLifeBrick(int life, Point2D position) {
 		super(position);
 		this.life = life;
 	}
 
-	public MultipleLifeBrick(Point position) {
+	public MultipleLifeBrick(Point2D position) {
 		this(defaultLife, position);
 	}
 	@Override
@@ -153,7 +166,7 @@ class MultipleLifeBrick extends Brick {
 class HOSBrick extends Brick {
 	public HOSBrick pair;
 
-	public HOSBrick(Point position) {
+	public HOSBrick(Point2D position) {
 		super(position);
 		this.pair = null;
 	}
@@ -162,19 +175,65 @@ class HOSBrick extends Brick {
 		B1.pair = B2;
 		B2.pair = B1;
 	}
+	public boolean checkCol(Ball b) {
+		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
+			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
+					|| (b.position.x + b.diameter >= this.position.x && b.position.x + b.diameter <= this.position.x + this.size.x)) {
+				b.position.x = this.pair.position.x + this.pair.size.x/2;
+				b.position.y = this.pair.position.y + this.pair.size.y/2;
+				
+				this.alive = false;
+				this.pair.alive = false;
+			}
+		}
+		if (b.position.x <= this.position.x + this.size.x && b.position.x + b.diameter >= this.position.x) {
+			if ((b.position.y >= this.position.y && b.position.y <= this.position.y + this.size.y)
+					|| (b.position.y + b.diameter >= this.position.y && b.position.y + b.diameter <= this.position.y + this.size.y)) {
+				b.velocity.y = -b.velocity.y;
+				b.position.x = this.pair.position.x + this.pair.size.x/2;
+				b.position.y = this.pair.position.y + this.pair.size.y/2;
+				this.alive = false;
+				this.pair.alive = false;
+			}
+		}
+		return !this.alive;
+	}
 }
 
 class RefractiveBrick extends Brick {
 	public static double defaultRefractiveIndex = 1.5;
 	public double RefractiveIndex;
 
-	public RefractiveBrick(double RefractiveIndex, Point position) {
+	public RefractiveBrick(double RefractiveIndex, Point2D position) {
 		super(position);
 		this.RefractiveIndex = RefractiveIndex;
 	}
 
-	public RefractiveBrick(Point position) {
+	public RefractiveBrick(Point2D position) {
 		this(defaultRefractiveIndex, position);
+	}
+	public boolean checkCol(Ball b) {
+		double speedi, speedf;
+		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
+			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
+					|| (b.position.x + b.diameter >= this.position.x && b.position.x + b.diameter <= this.position.x + this.size.x)) {
+				
+				speedi = b.velocity.distance();
+				b.velocity.x = b.velocity.x / this.RefractiveIndex;
+				speedf = b.velocity.distance();
+				b.velocity.x *= speedf / speedi;
+				b.velocity.y *= speedf / speedi;
+				this.alive = false;
+			}
+		}
+		if (b.position.x <= this.position.x + this.size.x && b.position.x + b.diameter >= this.position.x) {
+			if ((b.position.y >= this.position.y && b.position.y <= this.position.y + this.size.y)
+					|| (b.position.y + b.diameter >= this.position.y && b.position.y + b.diameter <= this.position.y + this.size.y)) {
+				b.velocity.y = b.velocity.y;
+				this.alive = false;
+			}
+		}
+		return !this.alive;
 	}
 }
 
@@ -182,11 +241,31 @@ class SpinBrick extends Brick {
 	public static Random RandomAngleGenerator = new Random();
 
 	public static double spin() {
-		return 360.0 * RandomAngleGenerator.nextDouble();
+		return 2.0 * Math.PI * RandomAngleGenerator.nextDouble();
 	}
 
-	public SpinBrick(Point position) {
+	public SpinBrick(Point2D position) {
 		super(position);
+	}
+	public boolean checkCol(Ball b) {
+		double speed = b.velocity.distance(), angle = spin();
+		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
+			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
+					|| (b.position.x + b.diameter >= this.position.x && b.position.x + b.diameter <= this.position.x + this.size.x)) {
+				b.velocity.x = speed * Math.cos(angle);
+				b.velocity.y = speed * Math.sin(angle);
+				this.alive = false;
+			}
+		}
+		if (b.position.x <= this.position.x + this.size.x && b.position.x + b.diameter >= this.position.x) {
+			if ((b.position.y >= this.position.y && b.position.y <= this.position.y + this.size.y)
+					|| (b.position.y + b.diameter >= this.position.y && b.position.y + b.diameter <= this.position.y + this.size.y)) {
+				b.velocity.x = speed * Math.cos(angle);
+				b.velocity.y = speed * Math.sin(angle);
+				this.alive = false;
+			}
+		}
+		return !this.alive;
 	}
 }
 
@@ -227,11 +306,11 @@ public class BrickOut {
 			}
 		};*/
 		MainFrame Frame = new MainFrame("BrickOut", frameSize);
-		Point initBallPos = new Point(500, 500);
-		Point initBallVel = new Point(30, -20);
+		Point2D initBallPos = new Point2D(500.0, 500.0);
+		Point2D initBallVel = new Point2D(30, -20);
 		Ball B = new Ball(initBallPos, initBallVel);
 		JLabel icon = B.add();
-		icon.setLocation(B.position);
+		icon.setLocation(B.position.topoint());
 		icon.setSize(B.diameter, B.diameter);
 		Frame.add(icon);
 		Brick[] R = new Brick[10];
@@ -239,10 +318,10 @@ public class BrickOut {
 		//Boolean[] Ex = new Boolean[10];
 		for (int i = 0; i < 10; i++) {
 			//Ex[i] = true;
-			R[i] = new Brick(new Point(1000 + i * 120, 1000));
+			R[i] = new Brick(new Point2D(1000.0 + i * 120, 1000.0));
 			temp[i] = new JLabel();
 			temp[i] = R[i].add();
-			temp[i].setLocation(R[i].position);
+			temp[i].setLocation(R[i].position.topoint());
 			temp[i].setSize(R[i].size.x, R[i].size.y);
 			Frame.add(temp[i]);
 		}
@@ -258,14 +337,14 @@ public class BrickOut {
 			B.checkCol(frameSize);
 			B.position.x = B.position.x + B.velocity.x;
 			B.position.y = B.position.y + B.velocity.y;
-			icon.setLocation(B.position);
+			icon.setLocation(B.position.topoint());
 			B.checkCol(frameSize);
 			for(int i=0;i<10;i++) {
 				if( R[i].alive ) {
 					if( R[i].checkCol(B) ) {
 						System.out.println("Collision with No. "+(i+1)+" occurred");
 					}else {
-						temp[i].setLocation(R[i].position);
+						temp[i].setLocation(R[i].position.topoint());
 						//System.out.println("No. "+(i+1)+" is here.");
 					}
 				}else {
