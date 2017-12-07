@@ -41,6 +41,9 @@ class MainFrame extends JFrame implements KeyListener {
 		setTitle(Title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tfield.addKeyListener(this);
+		tfield.setLocation(0, 0);
+		tfield.setSize(1, 1);
+		add(tfield);
 		setLayout(null);
 		setSize(p.x, p.y);
 		setVisible(true);
@@ -60,13 +63,11 @@ class MainFrame extends JFrame implements KeyListener {
 
 	protected void ShowInfo(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if (keyCode == 37) {
+		if (keyCode == 37)
 			move = 1;
-			System.out.println("left");
-		} else if (keyCode == 39) {
+		else if (keyCode == 39)
 			move = 2;
-			System.out.println("right");
-		} else
+		else
 			move = 0;
 	}
 
@@ -134,14 +135,11 @@ public class BrickOut {
 			if (MainFrame.move == 1)
 				A.moveLeft();
 			else if (MainFrame.move == 2)
-				A.moveRight();
+				A.moveRight(frameSize);
 			A.position.x += cnt % 2 == 0 ? 1 : -1;
 			DisBar.setLocation(A.position);
-			if (A.checkCol(B)) {
+			if (A.checkCol(B))
 				B.velocity.y = -B.velocity.y;
-				B.velocity.x = -B.velocity.x;
-			}
-			// System.out.println(B.position);
 			if (cnt % 100 == 0)
 				for (int i = 0; i < 10; i++)
 					if (R[i].alive) {
