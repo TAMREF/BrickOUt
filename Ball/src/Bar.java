@@ -32,6 +32,7 @@ class Bar {
 
 	public void moveRight() {
 		position.x = position.x + move.x;
+		/**/
 	}
 	
 	public boolean checkCol(Ball b)
