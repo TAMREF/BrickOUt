@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 
 class Bar {
 	Point size = new Point(300, 100);
-	Point position;
+	Point posit;
 	Point move = new Point(20, 0);
 	ImageIcon Bar = new ImageIcon(getClass().getResource("icons/Bar.png"));
 	Image temp = Bar.getImage();
@@ -19,7 +19,7 @@ class Bar {
 	}
 
 	Bar(Point b) {
-		this.position = b;
+		this.posit = b;
 	}
 
 	Bar() {
@@ -27,26 +27,61 @@ class Bar {
 	}
 
 	public void moveLeft() {
-		position.x = position.x > move.x ? position.x - move.x : 0;
+		posit.x = posit.x > move.x ? posit.x - move.x : 0;
 	}
 
 	public void moveRight(Point s) {
-		position.x = position.x + move.x + size.x > s.x ? s.x - size.x : position.x + move.x;
+		posit.x = posit.x + move.x + size.x > s.x ? s.x - size.x : posit.x + move.x;
 	}
 
-	public boolean checkCol(Ball b) {
-		if (b.position.x >= position.x && b.position.y >= position.y)
-			if (b.position.x <= position.x + size.x && b.position.y <= position.y + size.y)
-				return true;
-		if (b.position.x + b.diameter >= position.x && b.position.y >= position.y)
-			if (b.position.x + b.diameter <= position.x + size.x && b.position.y <= position.y + size.y)
-				return true;
-		if (b.position.x + b.diameter >= position.x && b.position.y + b.diameter >= position.y)
-			if (b.position.x + b.diameter <= position.x + size.x && b.position.y + b.diameter <= position.y + size.y)
-				return true;
-		if (b.position.x >= position.x && b.position.y + b.diameter >= position.y)
-			if (b.position.x <= position.x + size.x && b.position.y + b.diameter <= position.y + size.y)
-				return true;
+	protected boolean checkYcol(Ball b) { //checks whether velocity.y should be flipped
+		return ( b.posit.y + b.diameter >= this.posit.y && b.posit.y <= this.posit.y || b.posit.y >= this.posit.y + this.size.y && b.posit.y <= this.posit.y + this.size.y + b.diameter) &&
+				(b.posit.x >= this.posit.x && b.posit.x + b.diameter <= this.posit.x + this.size.x);
+	}
+	
+	protected boolean checkXcol(Ball b) { //checks whether velocity.x should be flipped
+		return ( b.posit.x + b.diameter >= this.posit.x && b.posit.x <= this.posit.x || b.posit.x >= this.posit.x + this.size.x && b.posit.x <= this.posit.x + this.size.x + b.diameter) &&
+				(b.posit.y >= this.posit.y && b.posit.y + b.diameter <= this.posit.y + this.size.y);
+	}
+	protected boolean checkXYcol(Ball b) { //checks whether both vel.x and vel.y should be flipped
+		Point2D tp;
+		int cnt = 0;
+		tp = new Point2D(b.posit.x, b.posit.y); //LU
+		if( tp.x >= this.posit.x && tp.x <= this.posit.x + this.size.x && tp.y >= this.posit.y && tp.y <= this.posit.y + this.size.y)
+			++cnt;
+		tp.x += b.diameter; //RU
+		if( tp.x >= this.posit.x && tp.x <= this.posit.x + this.size.x && tp.y >= this.posit.y && tp.y <= this.posit.y + this.size.y)
+			++cnt;
+		tp.x -= b.diameter;
+		tp.y += b.diameter; //LD
+		if( tp.x >= this.posit.x && tp.x <= this.posit.x + this.size.x && tp.y >= this.posit.y && tp.y <= this.posit.y + this.size.y)
+			++cnt;
+		tp.x += b.diameter; //RD
+		if( tp.x >= this.posit.x && tp.x <= this.posit.x + this.size.x && tp.y >= this.posit.y && tp.y <= this.posit.y + this.size.y)
+			++cnt;
+		
+		if(cnt == 1) return true;
 		return false;
+	}
+	public boolean checkCol(Ball b) {
+		
+		if (checkXYcol(b)) {
+			System.out.println("XYcol - Bar");
+			 b.velocity.x = -b.velocity.x;
+			 b.velocity.y = -b.velocity.y;
+			 return true;
+		}
+		else if(checkXcol(b)) {
+			System.out.println("Xcol - Bar");
+			b.velocity.x = -b.velocity.x;
+			return true;
+		}
+		else if(checkYcol(b)) {
+			System.out.println("Ycol - Bar");
+			b.velocity.y = -b.velocity.y;
+			return true;
+		}
+		return false;
+		
 	}
 }

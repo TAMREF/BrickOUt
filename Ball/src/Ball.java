@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 class Ball {
 	int diameter = 25;
 	Point2D velocity;
-	Point2D position;
+	Point2D posit;
 	ImageIcon Ball = new ImageIcon(getClass().getResource("icons/Ball.png"));
 	Image temp = Ball.getImage();
 	Image temp2 = temp.getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH);
@@ -15,13 +15,13 @@ class Ball {
 	JLabel DisBall = new JLabel(Ball2);
 
 	public void checkCol(Point b) {
-		if (position.x <= 0)
+		if (posit.x <= 0)
 			velocity.x = Math.abs(velocity.x);
-		if (position.x + diameter >= b.x)
+		if (posit.x + diameter >= b.x)
 			velocity.x = -Math.abs(velocity.x);
-		if (position.y <= 0)
+		if (posit.y <= 0)
 			velocity.y = Math.abs(velocity.y);
-		if (position.y + diameter >= b.y)
+		if (posit.y + diameter >= b.y)
 			velocity.y = -Math.abs(velocity.y);
 	}
 
@@ -30,7 +30,7 @@ class Ball {
 	}
 
 	Ball(Point2D pos, Point2D vel) {
-		this.position = pos;
+		this.posit = pos;
 		this.velocity = vel;
 	}
 

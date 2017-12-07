@@ -20,4 +20,8 @@ class Point2D {
 	Point topoint() {
 		return new Point((int) (this.x), (int) (this.y));
 	}
+	
+	public String toString() {
+		return "("+Double.toString(x)+", "+Double.toString(y)+")";
+	}
 }
