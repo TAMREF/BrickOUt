@@ -5,10 +5,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 class Bar {
-	Point size = new Point(300, 100);
+	Point size = new Point(300, 50);
 	Point posit;
 	Point move = new Point(20, 0);
-	ImageIcon Bar = new ImageIcon(getClass().getResource("icons/Bar.png"));
+	ImageIcon Bar = new ImageIcon(getClass().getResource("puzzlepack/png/paddleBlu.png"));
 	Image temp = Bar.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Bar2 = new ImageIcon(temp2);
