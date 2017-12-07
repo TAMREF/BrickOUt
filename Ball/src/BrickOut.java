@@ -117,16 +117,13 @@ public class BrickOut {
 				if (B.checkCol(R[i]) && Ex[i]) {
 					B.velocity.x = -B.velocity.x;
 					B.velocity.y = -B.velocity.y;
-					Ex[i] = false;
-				} else if (Ex[i]) {
-					R[i].position.x += (cnt % 2 == 0 ? 1 : -1);
-					temp[i].setLocation(R[i].position);
-				} else {
 					R[i].position.x += frameSize.x;
+					Ex[i] = false;
 				}
+				temp[i].setLocation(R[i].position);
 			}
 			try {
-				Thread.sleep(100);
+				Thread.sleep(25);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
@@ -138,7 +135,7 @@ public class BrickOut {
 			DisBar.setLocation(A.position);
 			if (A.checkCol(B))
 				B.velocity.y = -B.velocity.y;
-			System.out.println(B.position);
+			// System.out.println(B.position);
 			if (cnt % 100 == 0)
 				for (int i = 0; i < 10; i++)
 					if (Ex[i]) {
