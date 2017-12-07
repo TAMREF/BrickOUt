@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 class Ball {
-	int diameter = 50;
+	int diameter = 25;
 	Point2D velocity;
 	Point2D position;
 	ImageIcon Ball = new ImageIcon(getClass().getResource("icons/Ball.png"));

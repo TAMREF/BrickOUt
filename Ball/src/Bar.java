@@ -31,7 +31,7 @@ class Bar {
 	}
 
 	public void moveRight(Point s) {
-		position.x = position.x + move.x > s.x ? s.x : position.x + move.x;
+		position.x = position.x + move.x + size.x > s.x ? s.x - size.x : position.x + move.x;
 	}
 
 	public boolean checkCol(Ball b) {
