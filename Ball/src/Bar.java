@@ -27,11 +27,11 @@ class Bar {
 	}
 
 	public void moveLeft() {
-		position.x = position.x>move.x?position.x-move.x:0;
+		position.x = position.x > move.x ? position.x - move.x : 0;
 	}
 
 	public void moveRight(Point s) {
-		position.x = position.x+move.x>s.x?s.x:position.x+move.x; 
+		position.x = position.x + move.x > s.x ? s.x : position.x + move.x;
 	}
 
 	public boolean checkCol(Ball b) {

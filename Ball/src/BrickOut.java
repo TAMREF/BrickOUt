@@ -1,80 +1,6 @@
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-
-class Point2D {
-	public double x;
-	public double y;
-
-	Point2D(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	Point2D() {
-		this(0.0, 0.0);
-	}
-
-	double distance() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
-	}
-
-	Point topoint() {
-		return new Point((int) (this.x), (int) (this.y));
-	}
-}
-
-class MainFrame extends JFrame implements KeyListener {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2801274722167755407L;
-	JTextField tfield = new JTextField();
-	static int move = 0;
-
-	MainFrame(String Title, Point p) {
-		setTitle(Title);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		tfield.addKeyListener(this);
-		tfield.setLocation(0, 0);
-		tfield.setSize(1, 1);
-		add(tfield);
-		setLayout(null);
-		setSize(p.x, p.y);
-		setVisible(true);
-	}
-
-	public void keyPressed(KeyEvent a) {
-		ShowInfo(a);
-	}
-
-	public void keyReleased(KeyEvent a) {
-		ShowInfo(a);
-	}
-
-	public void keyTyped(KeyEvent a) {
-		ShowInfo(a);
-	}
-
-	protected void ShowInfo(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		if (keyCode == 37)
-			move = 1;
-		else if (keyCode == 39)
-			move = 2;
-		else
-			move = 0;
-	}
-
-	MainFrame() {
-		this("Default Title", new Point(2000, 2000));
-	}
-}
 
 public class BrickOut {
 	public static void main(String args[]) {
@@ -112,7 +38,6 @@ public class BrickOut {
 		DisBar.setSize(A.size.x, A.size.y);
 		Frame.add(DisBar);
 		while (true) {
-			B.checkCol(frameSize);
 			B.position.x = B.position.x + B.velocity.x;
 			B.position.y = B.position.y + B.velocity.y;
 			icon.setLocation(B.position.topoint());
