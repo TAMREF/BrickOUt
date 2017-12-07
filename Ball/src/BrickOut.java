@@ -73,10 +73,6 @@ class Ball {
 
 }
 
-
-
-
-
 class MainFrame extends JFrame {
 
 	/**
@@ -99,23 +95,18 @@ class MainFrame extends JFrame {
 
 public class BrickOut {
 	public static void main(String args[]) {
-		/*KeyListener klis = new KeyListener() {
-			public void keyTyped(KeyEvent KE) {
-				System.out.println("Typed");
-			}
-
-			public void keyReleased(KeyEvent KE) {
-				System.out.println("Released");
-			}
-
-			public void keyPressed(KeyEvent KE) {
-				System.out.println("Pressed");
-			}
-		};*/
+		/*
+		 * KeyListener klis = new KeyListener() { public void keyTyped(KeyEvent KE) {
+		 * System.out.println("Typed"); }
+		 * 
+		 * public void keyReleased(KeyEvent KE) { System.out.println("Released"); }
+		 * 
+		 * public void keyPressed(KeyEvent KE) { System.out.println("Pressed"); } };
+		 */
 		Point frameSize = new Point(3000, 2000);
 		MainFrame Frame = new MainFrame("BrickOut", frameSize);
-		Point initBallPos = new Point(500, 500);
-		Point initBallVel = new Point(15, 10);
+		Point initBallPos = new Point(1500, 1000);
+		Point initBallVel = new Point(15, -10);
 		Ball B = new Ball(initBallPos, initBallVel);
 		JLabel icon = B.add();
 		icon.setLocation(B.position);
@@ -126,19 +117,20 @@ public class BrickOut {
 		Boolean[] Ex = new Boolean[10];
 		for (int i = 0; i < 10; i++) {
 			Ex[i] = true;
-			R[i] = new Brick(new Point(1000 + i * 120, 1000));
+			R[i] = new Brick(new Point(1000 + i * 120, 500));
 			temp[i] = new JLabel();
 			temp[i] = R[i].add();
 			temp[i].setLocation(R[i].position);
 			temp[i].setSize(R[i].size.x, R[i].size.y);
 			Frame.add(temp[i]);
 		}
-		/*Bar A = new Bar(new Point(1500, 1500));
+		int cnt = 0;
+		Bar A = new Bar(new Point(1500, 1500));
 		JLabel DisBar = new JLabel();
 		DisBar = A.add();
 		DisBar.setLocation(A.position);
 		DisBar.setSize(A.size.x, A.size.y);
-		Frame.add(DisBar);*/
+		Frame.add(DisBar);
 		// Frame.setVisible(true);
 		// icon.setVisible(true);
 		while (true) {
@@ -153,10 +145,13 @@ public class BrickOut {
 					B.velocity.y = -B.velocity.y;
 					Ex[i] = false;
 				} else if (Ex[i]) {
+					R[i].position.x += (cnt % 2 == 0 ? 10 : -10);
 					temp[i].setLocation(R[i].position);
 					System.out.println("No." + (i + 1) + " is here");
-				} else
+				} else {
+					R[i].position.x += frameSize.x;
 					System.out.println("It isn't there");
+				}
 			}
 			try {
 				Thread.sleep(100);
@@ -164,15 +159,28 @@ public class BrickOut {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
-			/*if (event.getKeyCode() == KeyEvent.VK_LEFT)
+			if (cnt % 2 == 0)
 				A.moveLeft();
-			else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
+			else
 				A.moveRight();
-			if (B.checkCol(A))
-				B.velocity.y = Math.abs(B.velocity.y);
-			DisBar.setLocation(A.position);*/
+			DisBar.setLocation(A.position);
+			if(B.checkCol(A))
+				B.velocity.y = -B.velocity.y;
+			/*
+			 * if (event.getKeyCode() == KeyEvent.VK_LEFT) A.moveLeft(); else if
+			 * (event.getKeyCode() == KeyEvent.VK_RIGHT) A.moveRight(); if (B.checkCol(A))
+			 * B.velocity.y = Math.abs(B.velocity.y); DisBar.setLocation(A.position);
+			 */
 			System.out.println(B.position);
 			// System.out.println("Running...");
+			if (cnt % 100 == 0)
+				for (int i = 0; i < 10; i++)
+					if (Ex[i]) {
+						System.out.println("Changing Location of No." + (i + 1));
+						R[i].position.y += 50;
+						temp[i].setLocation(R[i].position);
+					}
+			cnt++;
 		}
 	}
 }

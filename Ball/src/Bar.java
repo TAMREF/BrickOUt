@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 class Bar {
-	Point size = new Point(300, 50);
+	Point size = new Point(300, 100);
 	Point position;
 	Point move = new Point(20, 0);
 	ImageIcon Bar = new ImageIcon(getClass().getResource("icons/Bar.png"));
