@@ -8,7 +8,7 @@ class Ball {
 	int diameter = 25;
 	Point2D velocity;
 	Point2D posit;
-	ImageIcon Ball = new ImageIcon(getClass().getResource("icons/Ball.png"));
+	ImageIcon Ball = new ImageIcon(getClass().getResource("puzzlepack/ballGrey.png"));
 	Image temp = Ball.getImage();
 	Image temp2 = temp.getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH);
 	ImageIcon Ball2 = new ImageIcon(temp2);

@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 class Brick {
 	public Point size = new Point(200, 100); // (width, height)
 	public Point2D posit;
-	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/png/element_grey_rectangle.png"));
+	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/element_grey_rectangle.png"));
 	Image temp = Brick.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Brick2 = new ImageIcon(temp2);
@@ -79,8 +79,15 @@ class Brick {
 
 		if (checkXYcol(b)) {
 			System.out.println("XYcol");
-			b.velocity.x = -b.velocity.x;
-			b.velocity.y = -b.velocity.y;
+			if ((b.velocity.x > 0) ^ (b.velocity.y > 0)) {
+				double temp = b.velocity.x;
+				b.velocity.x = -b.velocity.y;
+				b.velocity.y = -temp;
+			} else {
+				double temp = b.velocity.x;
+				b.velocity.x = b.velocity.y;
+				b.velocity.y = temp;
+			}
 			this.alive = false;
 			return true;
 		} else if (checkXcol(b)) {
@@ -112,7 +119,7 @@ class MultipleLifeBrick extends Brick {
 		this(defaultLife, posit);
 	}
 
-	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/png/element_green_rectangle.png"));
+	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/element_green_rectangle.png"));
 	Image temp = Brick.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Brick2 = new ImageIcon(temp2);
@@ -157,7 +164,7 @@ class HOSBrick extends Brick {
 	}
 
 	public void entangle(HOSBrick B1, HOSBrick B2) throws Exception {
-		BufferedImage temp = ImageIO.read(getClass().getResource("puzzlepack/png/element_blue_rectangle.png"));
+		BufferedImage temp = ImageIO.read(getClass().getResource("puzzlepack/element_blue_rectangle.png"));
 		BufferedImage image1 = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 		AffineTransform at = new AffineTransform();
 		at.scale(size.x / temp.getWidth(), size.y / temp.getHeight());
@@ -198,7 +205,7 @@ class RefractiveBrick extends Brick {
 	public static double defaultRefractiveIndex = 1.5;
 	public double RefractiveIndex;
 
-	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/png/element_purple_rectangle.png"));
+	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/element_purple_rectangle.png"));
 	Image temp = Brick.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Brick2 = new ImageIcon(temp2);
@@ -242,7 +249,7 @@ class RefractiveBrick extends Brick {
 class SpinBrick extends Brick {
 	public static Random RandomAngleGenerator = new Random();
 
-	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/png/element_red_rectangle.png"));
+	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/element_red_rectangle.png"));
 	Image temp = Brick.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Brick2 = new ImageIcon(temp2);
