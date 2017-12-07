@@ -7,15 +7,33 @@ import javax.swing.JLabel;
 public class BrickOut {
 	public static void main(String args[]) throws Exception {
 		Point frameSize = new Point(3000, 2000);
+		Point buttonSize = new Point(1200, 100);
 		MainFrame Frame = new MainFrame("BrickOut", frameSize);
 		Boolean startPressed = false;
-		Button button = new Button("Start", new Point(420, 70));
+		Button button = new Button("Start", buttonSize);
 		JButton but = button.add();
-		but.setLocation(new Point(1500, 1000));
-		but.setSize(420, 70);
+		but.setLocation(new Point(900, 900));
+		but.setSize(buttonSize.x, buttonSize.y);
 		Frame.add(but);
+		but.setVisible(true);
 		while (true) {
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				e.printStackTrace();
+			}
+			int tcnt = 0;
+			but.setLocation(new Point(900, 900 + (tcnt++ % 2 == 0 ? 1 : -1)));
+			startPressed = but.getModel().isPressed();
 			if (startPressed) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					e.printStackTrace();
+				}
+				but.setVisible(false);
 				Point2D initBallPos = new Point2D(1200, 800);
 				Point2D initBallVel = new Point2D(3.0, -18.0);
 				Ball B = new Ball(initBallPos, initBallVel);
@@ -23,14 +41,12 @@ public class BrickOut {
 				icon.setLocation(B.posit.topoint());
 				icon.setSize(B.diameter, B.diameter);
 				Frame.add(icon);
-				Brick[] R = new Brick[10];
+				Brick[] R = new HOSBrick[10];
 				JLabel[] temp = new JLabel[10];
 				for (int i = 0; i < 10; i++)
-					R[i] = new Brick(new Point2D(200 + i * 220, 200));
-				/*
-				 * for (int i = 0; i < 5; i++) ((HOSBrick) R[i]).entangle((HOSBrick) R[i],
-				 * (HOSBrick) R[9 - i]);
-				 */
+					R[i] = new HOSBrick(new Point2D(200 + i * 220, 200));
+				for (int i = 0; i < 5; i++)
+					((HOSBrick) R[i]).entangle((HOSBrick) R[i], (HOSBrick) R[9 - i]);
 				for (int i = 0; i < 10; i++) {
 					temp[i] = new JLabel();
 					temp[i] = R[i].add();
@@ -97,6 +113,8 @@ public class BrickOut {
 						Thread.currentThread().interrupt();
 						e.printStackTrace();
 					}
+					if (cnt == 0)
+						A.moveLeft();
 					if (MainFrame.move == 1)
 						A.moveLeft();
 					else if (MainFrame.move == 2)

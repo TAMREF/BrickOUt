@@ -167,7 +167,7 @@ class HOSBrick extends Brick {
 		BufferedImage temp = ImageIO.read(getClass().getResource("puzzlepack/element_blue_rectangle.png"));
 		BufferedImage image1 = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 		AffineTransform at = new AffineTransform();
-		at.scale(size.x / temp.getWidth(), size.y / temp.getHeight());
+		at.scale(size.x / (double) temp.getWidth(), size.y / (double) temp.getHeight());
 		AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 		image1 = scaleOp.filter(temp, image1);
 		BufferedImage image2 = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);

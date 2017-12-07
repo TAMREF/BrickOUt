@@ -7,9 +7,6 @@ import javax.swing.JTextField;
 
 class MainFrame extends JFrame implements KeyListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2801274722167755407L;
 	JTextField tfield = new JTextField();
 	static int move = 0;
