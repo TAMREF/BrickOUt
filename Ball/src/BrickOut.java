@@ -3,23 +3,23 @@ import java.awt.*;
 import java.util.Random;
 
 class Ball {
-	int radius = 100;
+	int diameter = 80;
 	Point velocity;
 	Point position;
 	ImageIcon Ball = new ImageIcon(getClass().getResource("icons/Ball.png"));
 	Image temp = Ball.getImage();
-	Image temp2 = temp.getScaledInstance(radius, radius, Image.SCALE_SMOOTH);
+	Image temp2 = temp.getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH);
 	ImageIcon Ball2 = new ImageIcon(temp2);
 	JLabel DisBall = new JLabel(Ball2);
-
+	
 	public void checkCol(Point b) {
 		if (position.x <= 0)
 			velocity.x = Math.abs(velocity.x);
-		if (position.x + radius >= b.x)
+		if (position.x + diameter >= b.x)
 			velocity.x = -Math.abs(velocity.x);
 		if (position.y <= 0)
 			velocity.y = Math.abs(velocity.y);
-		if (position.y + radius >= b.y)
+		if (position.y + diameter >= b.y)
 			velocity.y = -Math.abs(velocity.y);
 	}
 
@@ -27,14 +27,14 @@ class Ball {
 		if (position.x >= b.position.x && position.y >= b.position.y)
 			if (position.x <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
 				return true;
-		if (position.x + radius >= b.position.x && position.y >= b.position.y)
-			if (position.x + radius <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
+		if (position.x + diameter >= b.position.x && position.y >= b.position.y)
+			if (position.x + diameter <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
 				return true;
-		if (position.x + radius >= b.position.x && position.y + radius >= b.position.y)
-			if (position.x + radius <= b.position.x + b.size.x && position.y + radius <= b.position.y + b.size.y)
+		if (position.x + diameter >= b.position.x && position.y + diameter >= b.position.y)
+			if (position.x + diameter <= b.position.x + b.size.x && position.y + diameter <= b.position.y + b.size.y)
 				return true;
-		if (position.x >= b.position.x && position.y + radius >= b.position.y)
-			if (position.x <= b.position.x + b.size.x && position.y + radius <= b.position.y + b.size.y)
+		if (position.x >= b.position.x && position.y + diameter >= b.position.y)
+			if (position.x <= b.position.x + b.size.x && position.y + diameter <= b.position.y + b.size.y)
 				return true;
 		return false;
 	}
@@ -62,7 +62,8 @@ class Brick {
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Brick2 = new ImageIcon(temp2);
 	JLabel DisBrick = new JLabel(Brick2);
-
+	boolean alive = true;
+	
 	public JLabel add() {
 		return DisBrick;
 	}
@@ -78,6 +79,23 @@ class Brick {
 	public void godown() {
 
 	}
+	
+	public void checkCol(Ball b) {
+		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
+			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
+					|| (b.position.x + b.diameter >= this.position.x && b.position.x + b.diameter <= this.position.x + this.size.x)) {
+				b.velocity.x = -b.velocity.x;
+				this.alive = false;
+			}
+		}
+		if (b.position.x <= this.position.x + this.size.x && b.position.x + b.diameter >= this.position.x) {
+			if ((b.position.y >= this.position.y && b.position.y <= this.position.y + this.size.y)
+					|| (b.position.y + b.diameter >= this.position.y && b.position.y + b.diameter <= this.position.y + this.size.y)) {
+				b.velocity.y = -b.velocity.y;
+				this.alive = false;
+			}
+		}
+	}
 }
 
 class MultipleLifeBrick extends Brick {
@@ -91,6 +109,25 @@ class MultipleLifeBrick extends Brick {
 
 	public MultipleLifeBrick(Point position) {
 		this(defaultLife, position);
+	}
+	public void checkCol(Ball b) {
+		boolean flag = false;
+		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
+			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
+					|| (b.position.x + b.diameter >= this.position.x && b.position.x + b.diameter <= this.position.x + this.size.x)) {
+				b.velocity.x = -b.velocity.x;
+				flag = true;
+			}
+		}
+		if (b.position.x <= this.position.x + this.size.x && b.position.x + b.diameter >= this.position.x) {
+			if ((b.position.y >= this.position.y && b.position.y <= this.position.y + this.size.y)
+					|| (b.position.y + b.diameter >= this.position.y && b.position.y + b.diameter <= this.position.y + this.size.y)) {
+				b.velocity.y = -b.velocity.y;
+				flag = true;
+			}
+		}
+		if(flag) --this.life;
+		if(this.life == 0) this.alive = false;
 	}
 }
 
@@ -156,14 +193,14 @@ class MainFrame extends JFrame {
 
 public class BrickOut {
 	public static void main(String args[]) {
-		Point frameSize = new Point(3000, 2000);
+		Point frameSize = new Point(2400, 1600);
 		MainFrame Frame = new MainFrame("BrickOut", frameSize);
 		Point initBallPos = new Point(500, 500);
-		Point initBallVel = new Point(15, 10);
+		Point initBallVel = new Point(45, -30);
 		Ball B = new Ball(initBallPos, initBallVel);
 		JLabel icon = B.add();
 		icon.setLocation(B.position);
-		icon.setSize(B.radius, B.radius);
+		icon.setSize(B.diameter, B.diameter);
 		Frame.add(icon);
 		Brick[] R = new Brick[10];
 		JLabel[] temp = new JLabel[10];
@@ -197,7 +234,7 @@ public class BrickOut {
 					System.out.println("It isn't there");
 			}
 			try {
-				Thread.sleep(100);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
