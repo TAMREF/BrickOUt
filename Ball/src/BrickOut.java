@@ -1,9 +1,13 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
+import java.awt.Point;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 class Ball {
-	int diameter = 80;
+	int diameter = 40;
 	Point velocity;
 	Point position;
 	ImageIcon Ball = new ImageIcon(getClass().getResource("icons/Ball.png"));
@@ -24,6 +28,22 @@ class Ball {
 	}
 
 	public boolean checkCol(Brick b) {
+		if (position.x >= b.position.x && position.y >= b.position.y)
+			if (position.x <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
+				return true;
+		if (position.x + diameter >= b.position.x && position.y >= b.position.y)
+			if (position.x + diameter <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
+				return true;
+		if (position.x + diameter >= b.position.x && position.y + diameter >= b.position.y)
+			if (position.x + diameter <= b.position.x + b.size.x && position.y + diameter <= b.position.y + b.size.y)
+				return true;
+		if (position.x >= b.position.x && position.y + diameter >= b.position.y)
+			if (position.x <= b.position.x + b.size.x && position.y + diameter <= b.position.y + b.size.y)
+				return true;
+		return false;
+	}
+
+	public Boolean checkCol(Bar b) {
 		if (position.x >= b.position.x && position.y >= b.position.y)
 			if (position.x <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
 				return true;
@@ -67,20 +87,16 @@ class Brick {
 	public JLabel add() {
 		return DisBrick;
 	}
-
-	public Brick(Point position) {
-		this.position = position;
-	}
-
-	public Brick() {
-		this(new Point(0, 0));
-	}
-
 	public void godown() {
 
 	}
-	
-	public void checkCol(Ball b) {
+	public Brick() {
+		this(new Point(0,0));
+	}
+	public Brick(Point position) {
+		this.position = position;
+	}
+	public boolean checkCol(Ball b) {
 		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
 			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
 					|| (b.position.x + b.diameter >= this.position.x && b.position.x + b.diameter <= this.position.x + this.size.x)) {
@@ -95,6 +111,7 @@ class Brick {
 				this.alive = false;
 			}
 		}
+		return !this.alive;
 	}
 }
 
@@ -110,7 +127,8 @@ class MultipleLifeBrick extends Brick {
 	public MultipleLifeBrick(Point position) {
 		this(defaultLife, position);
 	}
-	public void checkCol(Ball b) {
+	@Override
+	public boolean checkCol(Ball b) {
 		boolean flag = false;
 		if (b.position.y <= this.position.y + this.size.y && b.position.y + b.diameter >= this.position.y) {
 			if ((b.position.x >= this.position.x && b.position.x <= this.position.x + this.size.x)
@@ -128,6 +146,7 @@ class MultipleLifeBrick extends Brick {
 		}
 		if(flag) --this.life;
 		if(this.life == 0) this.alive = false;
+		return flag;
 	}
 }
 
@@ -194,9 +213,22 @@ class MainFrame extends JFrame {
 public class BrickOut {
 	public static void main(String args[]) {
 		Point frameSize = new Point(2400, 1600);
+		/*KeyListener klis = new KeyListener() {
+			public void keyTyped(KeyEvent KE) {
+				System.out.println("Typed");
+			}
+
+			public void keyReleased(KeyEvent KE) {
+				System.out.println("Released");
+			}
+
+			public void keyPressed(KeyEvent KE) {
+				System.out.println("Pressed");
+			}
+		};*/
 		MainFrame Frame = new MainFrame("BrickOut", frameSize);
 		Point initBallPos = new Point(500, 500);
-		Point initBallVel = new Point(45, -30);
+		Point initBallVel = new Point(30, -20);
 		Ball B = new Ball(initBallPos, initBallVel);
 		JLabel icon = B.add();
 		icon.setLocation(B.position);
@@ -204,9 +236,9 @@ public class BrickOut {
 		Frame.add(icon);
 		Brick[] R = new Brick[10];
 		JLabel[] temp = new JLabel[10];
-		Boolean[] Ex = new Boolean[10];
+		//Boolean[] Ex = new Boolean[10];
 		for (int i = 0; i < 10; i++) {
-			Ex[i] = true;
+			//Ex[i] = true;
 			R[i] = new Brick(new Point(1000 + i * 120, 1000));
 			temp[i] = new JLabel();
 			temp[i] = R[i].add();
@@ -214,6 +246,12 @@ public class BrickOut {
 			temp[i].setSize(R[i].size.x, R[i].size.y);
 			Frame.add(temp[i]);
 		}
+		/*Bar A = new Bar(new Point(1500, 1500));
+		JLabel DisBar = new JLabel();
+		DisBar = A.add();
+		DisBar.setLocation(A.position);
+		DisBar.setSize(A.size.x, A.size.y);
+		Frame.add(DisBar);*/
 		// Frame.setVisible(true);
 		// icon.setVisible(true);
 		while (true) {
@@ -222,16 +260,17 @@ public class BrickOut {
 			B.position.y = B.position.y + B.velocity.y;
 			icon.setLocation(B.position);
 			B.checkCol(frameSize);
-			for (int i = 0; i < 10; i++) {
-				if (B.checkCol(R[i]) && Ex[i]) {
-					B.velocity.x = -B.velocity.x;
-					B.velocity.y = -B.velocity.y;
-					Ex[i] = false;
-				} else if (Ex[i]) {
-					temp[i].setLocation(R[i].position);
-					System.out.println("No." + (i + 1) + " is here");
-				} else
-					System.out.println("It isn't there");
+			for(int i=0;i<10;i++) {
+				if( R[i].alive ) {
+					if( R[i].checkCol(B) ) {
+						System.out.println("Collision with No. "+(i+1)+" occurred");
+					}else {
+						temp[i].setLocation(R[i].position);
+						//System.out.println("No. "+(i+1)+" is here.");
+					}
+				}else {
+					//System.out.println("No. "+(i+1)+" isn't here.");
+				}
 			}
 			try {
 				Thread.sleep(50);
@@ -239,7 +278,14 @@ public class BrickOut {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
-			System.out.println(B.position);
+			/*if (event.getKeyCode() == KeyEvent.VK_LEFT)
+				A.moveLeft();
+			else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
+				A.moveRight();
+			if (B.checkCol(A))
+				B.velocity.y = Math.abs(B.velocity.y);
+			DisBar.setLocation(A.position);*/
+			//System.out.println(B.position);
 			// System.out.println("Running...");
 		}
 	}
