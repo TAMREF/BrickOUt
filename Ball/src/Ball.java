@@ -25,22 +25,6 @@ class Ball {
 			velocity.y = -Math.abs(velocity.y);
 	}
 
-	public boolean checkCol(Brick b) {
-		if (position.x >= b.position.x && position.y >= b.position.y)
-			if (position.x <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
-				return true;
-		if (position.x + diameter >= b.position.x && position.y >= b.position.y)
-			if (position.x + diameter <= b.position.x + b.size.x && position.y <= b.position.y + b.size.y)
-				return true;
-		if (position.x + diameter >= b.position.x && position.y + diameter >= b.position.y)
-			if (position.x + diameter <= b.position.x + b.size.x && position.y + diameter <= b.position.y + b.size.y)
-				return true;
-		if (position.x >= b.position.x && position.y + diameter >= b.position.y)
-			if (position.x <= b.position.x + b.size.x && position.y + diameter <= b.position.y + b.size.y)
-				return true;
-		return false;
-	}
-
 	public JLabel add() {
 		return DisBall;
 	}

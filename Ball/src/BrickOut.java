@@ -35,11 +35,12 @@ class MainFrame extends JFrame implements KeyListener {
 	 */
 	private static final long serialVersionUID = 2801274722167755407L;
 	JTextField tfield = new JTextField();
+	static int move = 0;
 
 	MainFrame(String Title, Point p) {
 		setTitle(Title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// tfield.addKeyListener(this);
+		tfield.addKeyListener(this);
 		setLayout(null);
 		setSize(p.x, p.y);
 		setVisible(true);
@@ -60,10 +61,13 @@ class MainFrame extends JFrame implements KeyListener {
 	protected void ShowInfo(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == 37) {
+			move = 1;
 			System.out.println("left");
 		} else if (keyCode == 39) {
+			move = 2;
 			System.out.println("right");
-		}
+		} else
+			move = 0;
 	}
 
 	MainFrame() {
@@ -85,7 +89,7 @@ public class BrickOut {
 		Brick[] R = new Brick[10];
 		JLabel[] temp = new JLabel[10];
 		for (int i = 0; i < 10; i++) {
-			R[i] = new Brick(new Point2D(900 + i * 120, 0));
+			R[i] = new Brick(new Point2D(400 + i * 220, 0));
 			temp[i] = new JLabel();
 			temp[i] = R[i].add();
 			temp[i].setLocation(R[i].position.topoint());
@@ -94,11 +98,12 @@ public class BrickOut {
 		}
 		int cnt = 0;
 		int score = 0;
-		JLabel Score = new JLabel("Score: 0");
+		JLabel Score = new JLabel();
 		Score.setFont(new Font("Serif", Font.PLAIN, 72));
-		Score.setLocation(new Point(0, 0));
-		Score.setSize(300, 100);
+		Score.setLocation(new Point(100, 100));
+		Score.setSize(500, 100);
 		Frame.add(Score);
+		Score.setText("Score :" + score);
 		Bar A = new Bar(new Point(1350, 1200));
 		JLabel DisBar = new JLabel();
 		DisBar = A.add();
@@ -110,14 +115,13 @@ public class BrickOut {
 			B.position.x = B.position.x + B.velocity.x;
 			B.position.y = B.position.y + B.velocity.y;
 			icon.setLocation(B.position.topoint());
-			Score.setLocation(new Point(0, 0));
+			Score.setLocation(new Point(100, 100));
 			B.checkCol(frameSize);
 			for (int i = 0; i < 10; i++) {
 				if (R[i].alive && R[i].checkCol(B)) {
 					R[i].position.x = frameSize.x;
 					R[i].alive = false;
-					score += 100;
-					Score.setText("Score: " + Integer.toString(score));
+					Score.setText("Score: " + (score += 100));
 				}
 				temp[i].setLocation(R[i].position.topoint());
 			}
@@ -127,10 +131,11 @@ public class BrickOut {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
-			if (cnt % 2 == 0)
+			if (MainFrame.move == 1)
 				A.moveLeft();
-			else
+			else if (MainFrame.move == 2)
 				A.moveRight();
+			A.position.x += cnt % 2 == 0 ? 1 : -1;
 			DisBar.setLocation(A.position);
 			if (A.checkCol(B)) {
 				B.velocity.y = -B.velocity.y;

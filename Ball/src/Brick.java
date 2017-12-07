@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 class Brick {
-	public Point size = new Point(100, 50); // (width, height)
+	public Point size = new Point(200, 100); // (width, height)
 	public Point2D position;
 	ImageIcon Brick = new ImageIcon(getClass().getResource("icons/Brick.png"));
 	Image temp = Brick.getImage();
