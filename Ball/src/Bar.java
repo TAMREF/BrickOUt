@@ -33,4 +33,21 @@ class Bar {
 	public void moveRight() {
 		position.x = position.x + move.x;
 	}
+	
+	public boolean checkCol(Ball b)
+	{
+		if (b.position.x >= position.x && b.position.y >= position.y)
+			if (b.position.x <= position.x + size.x && b.position.y <= position.y + size.y)
+				return true;
+		if (b.position.x + b.radius >= position.x && b.position.y >= position.y)
+			if (b.position.x + b.radius <= position.x + size.x && b.position.y <= position.y + size.y)
+				return true;
+		if (b.position.x + b.radius >= position.x && b.position.y + b.radius >= position.y)
+			if (b.position.x + b.radius <= position.x + size.x && b.position.y + b.radius <= position.y + size.y)
+				return true;
+		if (b.position.x >= position.x && b.position.y + b.radius >= position.y)
+			if (b.position.x <= position.x + size.x && b.position.y + b.radius <= position.y + size.y)
+				return true;
+		return false;
+	}
 }

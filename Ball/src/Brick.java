@@ -27,7 +27,7 @@ class Brick {
 	}
 
 	public void godown() {
-
+		position.y = position.y + 50;
 	}
 }
 
