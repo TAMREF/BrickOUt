@@ -1,30 +1,57 @@
 import java.awt.Font;
 import java.awt.Point;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class BrickOut {
-	public static void main(String args[]) throws Exception {
+	public static void main(String args[]) {
+		int tcnt = 0;
+		Point backSize = new Point(100, 100);
+		Background back = new Background(backSize);
 		Point frameSize = new Point(3000, 2000);
 		Point buttonSize = new Point(1200, 100);
-		MainFrame Frame = new MainFrame("BrickOut", frameSize);
+		MainFrame frame = new MainFrame("BrickOut", frameSize);
+		JLabel[][] backLabel = new JLabel[frame.size.x / back.size.x][frame.size.y / back.size.y];
+		for (int i = 0; i < frameSize.x / backSize.x; i++)
+			for (int j = 0; j < frameSize.y / backSize.y; j++) {
+				backLabel[i][j] = back.add();
+				backLabel[i][j].setLocation(backSize.x * i + 1, backSize.y * j);
+				backLabel[i][j].setSize(backSize.x, backSize.y);
+				frame.add(backLabel[i][j], 0);
+			}
 		Boolean startPressed = false;
-		Button button = new Button("Start", buttonSize);
-		JButton but = button.add();
-		but.setLocation(new Point(900, 900));
+		Button button = null;
+		try {
+			button = new Button("Start", buttonSize);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		JButton but = null;
+		try {
+			but = button.add();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		but.setLocation(new Point(899, 900));
 		but.setSize(buttonSize.x, buttonSize.y);
-		Frame.add(but);
-		but.setVisible(true);
+		frame.add(but, 0);
 		while (true) {
+			if (tcnt == 0) {
+				for (int i = 0; i < frameSize.x / backSize.x; i++)
+					for (int j = 0; j < frameSize.y / backSize.y; j++)
+						backLabel[i][j].setLocation(backSize.x * i, backSize.y * j);
+				but.setLocation(new Point(900, 900));
+			}
 			try {
-				Thread.sleep(20);
+				Thread.sleep(25);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
-			int tcnt = 0;
-			but.setLocation(new Point(900, 900 + (tcnt++ % 2 == 0 ? 1 : -1)));
 			startPressed = but.getModel().isPressed();
 			if (startPressed) {
 				try {
@@ -40,34 +67,43 @@ public class BrickOut {
 				JLabel icon = B.add();
 				icon.setLocation(B.posit.topoint());
 				icon.setSize(B.diameter, B.diameter);
-				Frame.add(icon);
-				Brick[] R = new HOSBrick[10];
+				frame.add(icon, 0);
+				Brick[] R = new Brick[10];
 				JLabel[] temp = new JLabel[10];
 				for (int i = 0; i < 10; i++)
-					R[i] = new HOSBrick(new Point2D(200 + i * 220, 200));
-				for (int i = 0; i < 5; i++)
-					((HOSBrick) R[i]).entangle((HOSBrick) R[i], (HOSBrick) R[9 - i]);
+					R[i] = new Brick(new Point2D(200 + i * 220, 200));
+				/*
+				 * for (int i = 0; i < 5; i++) try { ((HOSBrick) R[i]).entangle((HOSBrick) R[i],
+				 * (HOSBrick) R[9 - i]); } catch (Exception e) { // TODO Auto-generated catch
+				 * block e.printStackTrace(); }
+				 */
 				for (int i = 0; i < 10; i++) {
-					temp[i] = new JLabel();
 					temp[i] = R[i].add();
 					temp[i].setLocation(R[i].posit.topoint());
 					temp[i].setSize(R[i].size.x, R[i].size.y);
-					Frame.add(temp[i]);
+					frame.add(temp[i], 0);
 				}
 				int cnt = 0;
 				int score = 0;
+				double theta = Math.atan(B.velocity.y/B.velocity.x);
 				JLabel Score = new JLabel();
 				Score.setFont(new Font("Serif", Font.PLAIN, 72));
 				Score.setLocation(new Point(100, 100));
 				Score.setSize(500, 100);
-				Frame.add(Score);
+				frame.add(Score, 0);
 				Score.setText("Score :" + score);
+				JLabel Theta = new JLabel();
+				Theta.setFont(new Font("Serif", Font.PLAIN, 72));
+				Theta.setLocation(new Point(100, 200));
+				Theta.setSize(500, 100);
+				frame.add(Theta, 0);
+				Theta.setText("Theta :" + theta);
 				Bar A = new Bar(new Point(1350, 1200));
 				JLabel DisBar = new JLabel();
 				DisBar = A.add();
 				DisBar.setLocation(A.posit);
 				DisBar.setSize(A.size.x, A.size.y);
-				Frame.add(DisBar);
+				frame.add(DisBar, 0);
 				while (true) {
 					B.checkCol(frameSize);
 					B.posit.x = B.posit.x + B.velocity.x;
@@ -129,6 +165,8 @@ public class BrickOut {
 							}
 						}
 					}
+					theta = Math.atan(B.velocity.y/B.velocity.x);
+					Theta.setText("Theta :"+theta);
 					cnt++;
 				}
 			}

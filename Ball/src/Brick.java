@@ -5,11 +5,17 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 class Brick {
 	public Point size = new Point(200, 100); // (width, height)
@@ -17,9 +23,13 @@ class Brick {
 	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/element_grey_rectangle.png"));
 	Image temp = Brick.getImage();
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
-	ImageIcon Brick2 = new ImageIcon(temp2);
-	JLabel DisBrick = new JLabel(Brick2);
+	JLabel DisBrick = new JLabel(new ImageIcon(temp2));
 	boolean alive = true;
+	public void play() throws IOException {
+		InputStream in = new FileInputStream("/Ball/src/kenney_digitalaudio/Audio/tone1.ogg");
+		AudioStream audio = new AudioStream(in);
+		AudioPlayer.player.start(audio);
+	}
 
 	public JLabel add() {
 		return DisBrick;
@@ -70,8 +80,15 @@ class Brick {
 				&& tp.y <= this.posit.y + this.size.y)
 			++cnt;
 
-		if (cnt == 1)
+		if (cnt == 1) {
+			try {
+				play();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return true;
+		}
 		return false;
 	}
 
