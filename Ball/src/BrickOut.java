@@ -52,10 +52,10 @@ public class BrickOut {
 				icon.setLocation(B.posit.topoint());
 				icon.setSize(B.diameter, B.diameter);
 				frame.add(icon, 0);
-				Brick[] R = new Brick[10];
+				Brick[] R = new SpinBrick[10];
 				JLabel[] temp = new JLabel[10];
 				for (int i = 0; i < 10; i++)
-					R[i] = new Brick(new Point2D(400 + i * 220, 200));
+					R[i] = new SpinBrick(new Point2D(400 + i * 220, 200));
 				/*
 				 * for (int i = 0; i < 5; i++) try { ((HOSBrick) R[i]).entangle((HOSBrick) R[i],
 				 * (HOSBrick) R[9 - i]); } catch (Exception e) { // TODO Auto-generated catch
@@ -161,14 +161,12 @@ public class BrickOut {
 					DisBar.setLocation(A.posit);
 					DisBar.repaint();
 					A.checkCol(B);
-					if (cnt % 100 == 0) {
-						for (int i = 0; i < 10; i++) {
+					if (cnt % 100 == 0)
+						for (int i = 0; i < 10; i++)
 							if (R[i].alive) {
 								R[i].godown();
 								temp[i].setLocation(R[i].posit.topoint());
 							}
-						}
-					}
 					theta = Math.atan(B.velocity.y / B.velocity.x);
 					Theta.setText("Theta :" + theta);
 					cnt++;

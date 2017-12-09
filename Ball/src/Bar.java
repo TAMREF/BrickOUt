@@ -137,9 +137,9 @@ public class Bar {
 			double a = Math.abs(theta);
 			a = Math.min(a, 1.4);
 			a = Math.max(a, 0.3);
-			theta = theta/Math.abs(theta)*a;
-			b.velocity.x = Math.cos(theta) * temp;
-			b.velocity.y = -Math.sin(theta) * temp;
+			theta = theta / Math.abs(theta) * a;
+			b.velocity.x = b.velocity.x/Math.abs(b.velocity.x)*Math.abs(Math.cos(theta) * temp);
+			b.velocity.y = -Math.abs(Math.sin(theta) * temp);
 			play();
 			return true;
 		}

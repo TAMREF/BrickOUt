@@ -95,9 +95,8 @@ public class Brick {
 				&& tp.y <= this.posit.y + this.size.y)
 			++cnt;
 
-		if (cnt == 1) {
+		if (cnt == 1)
 			return true;
-		}
 		return false;
 	}
 
@@ -160,25 +159,34 @@ class MultipleLifeBrick extends Brick {
 		if (checkXYcol(b)) {
 			b.velocity.x = -b.velocity.x;
 			b.velocity.y = -b.velocity.y;
-			--this.life;
-			if (this.life == 0)
+			if (--this.life == 0) {
+				play();
 				this.alive = false;
+			} else
+				Bar.play();
 			return true;
 		} else if (checkXcol(b)) {
 			b.velocity.x = -b.velocity.x;
-			--this.life;
-			if (this.life == 0)
+			if (--this.life == 0) {
+				play();
 				this.alive = false;
+			} else
+				Bar.play();
 			return true;
 		} else if (checkYcol(b)) {
 			b.velocity.y = -b.velocity.y;
-			--this.life;
-			if (this.life == 0)
+			if (--this.life == 0) {
+				play();
 				this.alive = false;
+			} else
+				Bar.play();
 			return true;
 		}
 		return false;
+	}
 
+	public JLabel add() {
+		return this.DisBrick;
 	}
 }
 
@@ -224,9 +232,14 @@ class HOSBrick extends Brick {
 			this.pair.alive = false;
 			b.posit.x = this.pair.posit.x + 0.5 * this.size.x;
 			b.posit.y = this.pair.posit.y + 0.5 * this.size.y;
+			play();
 			return true;
 		}
 		return false;
+	}
+
+	public JLabel add() {
+		return this.DisBrick;
 	}
 }
 
@@ -253,6 +266,7 @@ class RefractiveBrick extends Brick {
 		double speedi, speedf;
 		if (checkXYcol(b)) {
 			this.alive = false;
+			play();
 			return true;
 		} else if (checkXcol(b)) {
 			speedi = b.velocity.distance();
@@ -260,6 +274,7 @@ class RefractiveBrick extends Brick {
 			speedf = b.velocity.distance();
 			b.velocity.x *= speedi / speedf;
 			b.velocity.y *= speedi / speedf;
+			play();
 			this.alive = false;
 			return true;
 		} else if (checkYcol(b)) {
@@ -269,9 +284,14 @@ class RefractiveBrick extends Brick {
 			b.velocity.x *= speedi / speedf;
 			b.velocity.y *= speedi / speedf;
 			this.alive = false;
+			play();
 			return true;
 		}
 		return false;
+	}
+
+	public JLabel add() {
+		return this.DisBrick;
 	}
 }
 
@@ -297,8 +317,13 @@ class SpinBrick extends Brick {
 		if (checkXYcol(b) || checkXcol(b) || checkYcol(b)) {
 			this.alive = false;
 			b.velocity = new Point2D(speed * Math.cos(angle), speed * Math.sin(angle));
+			play();
 			return true;
 		}
 		return false;
+	}
+
+	public JLabel add() {
+		return this.DisBrick;
 	}
 }
