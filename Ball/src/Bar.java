@@ -42,6 +42,8 @@ public class Bar {
 	}
 
 	public JLabel add() {
+		DisBar.setLocation(posit);
+		DisBar.setSize(size.x, size.y);
 		return DisBar;
 	}
 

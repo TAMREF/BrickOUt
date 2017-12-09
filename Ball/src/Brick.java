@@ -47,6 +47,8 @@ public class Brick {
 	}
 
 	public JLabel add() {
+		DisBrick.setLocation(posit.topoint());
+		DisBrick.setSize(size.x, size.y);
 		return DisBrick;
 	}
 
@@ -186,6 +188,8 @@ class MultipleLifeBrick extends Brick {
 	}
 
 	public JLabel add() {
+		this.DisBrick.setLocation(posit.topoint());
+		this.DisBrick.setSize(size.x, size.y);
 		return this.DisBrick;
 	}
 }
@@ -239,6 +243,8 @@ class HOSBrick extends Brick {
 	}
 
 	public JLabel add() {
+		this.DisBrick.setLocation(posit.topoint());
+		this.DisBrick.setSize(size.x, size.y);
 		return this.DisBrick;
 	}
 }
@@ -291,6 +297,8 @@ class RefractiveBrick extends Brick {
 	}
 
 	public JLabel add() {
+		this.DisBrick.setLocation(posit.topoint());
+		this.DisBrick.setSize(size.x, size.y);
 		return this.DisBrick;
 	}
 }
@@ -324,6 +332,8 @@ class SpinBrick extends Brick {
 	}
 
 	public JLabel add() {
+		this.DisBrick.setLocation(posit.topoint());
+		this.DisBrick.setSize(size.x, size.y);
 		return this.DisBrick;
 	}
 }

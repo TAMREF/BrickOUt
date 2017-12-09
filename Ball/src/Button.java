@@ -72,6 +72,8 @@ public class Button {
 		g1.dispose();
 		g.dispose();
 		buttonLabel.setPressedIcon(new ImageIcon(image3));
+		buttonLabel.setLocation(position);
+		buttonLabel.setSize(size.x, size.y);
 		return buttonLabel;
 	}
 

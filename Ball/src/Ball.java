@@ -28,8 +28,7 @@ public class Ball {
 			bo = true;
 			velocity.y = Math.abs(velocity.y);
 		}
-		if (posit.y + diameter >= b.y)
-		{
+		if (posit.y + diameter >= b.y) {
 			bo = true;
 			velocity.y = -Math.abs(velocity.y);
 		}
@@ -38,6 +37,8 @@ public class Ball {
 	}
 
 	public JLabel add() {
+		DisBall.setLocation(posit.topoint());
+		DisBall.setSize(diameter, diameter);
 		return DisBall;
 	}
 

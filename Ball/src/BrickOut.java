@@ -49,8 +49,6 @@ public class BrickOut {
 				Point2D initBallVel = new Point2D(5.0, -10.0);
 				Ball B = new Ball(initBallPos, initBallVel);
 				JLabel icon = B.add();
-				icon.setLocation(B.posit.topoint());
-				icon.setSize(B.diameter, B.diameter);
 				frame.add(icon, 0);
 				Brick[] R = new SpinBrick[10];
 				JLabel[] temp = new JLabel[10];
@@ -63,8 +61,6 @@ public class BrickOut {
 				 */
 				for (int i = 0; i < 10; i++) {
 					temp[i] = R[i].add();
-					temp[i].setLocation(R[i].posit.topoint());
-					temp[i].setSize(R[i].size.x, R[i].size.y);
 					frame.add(temp[i], 0);
 				}
 				int cnt = 0;
@@ -84,20 +80,14 @@ public class BrickOut {
 				Bar A = new Bar(new Point(1350, 1200));
 				JLabel DisBar = new JLabel();
 				DisBar = A.add();
-				DisBar.setLocation(A.posit);
-				DisBar.setSize(A.size.x, A.size.y);
 				frame.add(DisBar, 0);
 				Button ps = new Button("Pause", new Point(300, 100), new Point(2600, 300));
 				JButton pause = ps.add();
-				pause.setLocation(ps.position);
-				pause.setSize(ps.size.x, ps.size.y);
 				frame.add(pause);
 				while (true) {
 					if (pause.getModel().isPressed()) {
 						Button rs = new Button("Resume", buttonSize, new Point(900, 900));
 						JButton resume = rs.add();
-						resume.setLocation(rs.position);
-						resume.setSize(buttonSize.x, buttonSize.y);
 						frame.add(resume);
 						for (int i = 0;; i++) {
 							if (i == 0)
