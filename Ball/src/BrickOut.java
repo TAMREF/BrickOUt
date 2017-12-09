@@ -1,7 +1,5 @@
 import java.awt.Font;
 import java.awt.Point;
-import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -17,34 +15,21 @@ public class BrickOut {
 		for (int i = 0; i < frameSize.x / backSize.x; i++)
 			for (int j = 0; j < frameSize.y / backSize.y; j++) {
 				backLabel[i][j] = back.add();
-				backLabel[i][j].setLocation(backSize.x * i + 1, backSize.y * j);
+				backLabel[i][j].setLocation(backSize.x * i, backSize.y * j);
 				backLabel[i][j].setSize(backSize.x, backSize.y);
 				frame.add(backLabel[i][j], 0);
 			}
-		Boolean startPressed = false;
-		Button button = null;
-		try {
-			button = new Button("Start", buttonSize);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		JButton but = null;
-		try {
-			but = button.add();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		but.setLocation(new Point(899, 900));
-		but.setSize(buttonSize.x, buttonSize.y);
-		frame.add(but, 0);
+		Button st = new Button("Start", buttonSize, new Point(900, 900));
+		JButton start = st.add();
+		start.setLocation(st.position.x, st.position.y);
+		start.setSize(st.size.x, st.size.y);
+		frame.add(start, 0);
 		while (true) {
-			if (tcnt == 0) {
-				for (int i = 0; i < frameSize.x / backSize.x; i++)
-					for (int j = 0; j < frameSize.y / backSize.y; j++)
-						backLabel[i][j].setLocation(backSize.x * i, backSize.y * j);
-				but.setLocation(new Point(900, 900));
+			if (tcnt++ == 0) {
+				for (JLabel[] i : backLabel)
+					for (JLabel j : i)
+						j.repaint();
+				start.repaint();
 			}
 			try {
 				Thread.sleep(25);
@@ -52,17 +37,16 @@ public class BrickOut {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
-			startPressed = but.getModel().isPressed();
-			if (startPressed) {
+			if (start.getModel().isPressed()) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 					e.printStackTrace();
 				}
-				but.setVisible(false);
+				start.setVisible(false);
 				Point2D initBallPos = new Point2D(1200, 800);
-				Point2D initBallVel = new Point2D(3.0, -18.0);
+				Point2D initBallVel = new Point2D(5.0, -10.0);
 				Ball B = new Ball(initBallPos, initBallVel);
 				JLabel icon = B.add();
 				icon.setLocation(B.posit.topoint());
@@ -71,7 +55,7 @@ public class BrickOut {
 				Brick[] R = new Brick[10];
 				JLabel[] temp = new JLabel[10];
 				for (int i = 0; i < 10; i++)
-					R[i] = new Brick(new Point2D(200 + i * 220, 200));
+					R[i] = new Brick(new Point2D(400 + i * 220, 200));
 				/*
 				 * for (int i = 0; i < 5; i++) try { ((HOSBrick) R[i]).entangle((HOSBrick) R[i],
 				 * (HOSBrick) R[9 - i]); } catch (Exception e) { // TODO Auto-generated catch
@@ -85,7 +69,7 @@ public class BrickOut {
 				}
 				int cnt = 0;
 				int score = 0;
-				double theta = Math.atan(B.velocity.y/B.velocity.x);
+				double theta = Math.atan(B.velocity.y / B.velocity.x);
 				JLabel Score = new JLabel();
 				Score.setFont(new Font("Serif", Font.PLAIN, 72));
 				Score.setLocation(new Point(100, 100));
@@ -97,15 +81,39 @@ public class BrickOut {
 				Theta.setLocation(new Point(100, 200));
 				Theta.setSize(500, 100);
 				frame.add(Theta, 0);
-				Theta.setText("Theta :" + theta);
 				Bar A = new Bar(new Point(1350, 1200));
 				JLabel DisBar = new JLabel();
 				DisBar = A.add();
 				DisBar.setLocation(A.posit);
 				DisBar.setSize(A.size.x, A.size.y);
 				frame.add(DisBar, 0);
+				Button ps = new Button("Pause", new Point(300, 100), new Point(2600, 300));
+				JButton pause = ps.add();
+				pause.setLocation(ps.position);
+				pause.setSize(ps.size.x, ps.size.y);
+				frame.add(pause);
 				while (true) {
-					B.checkCol(frameSize);
+					if (pause.getModel().isPressed()) {
+						Button rs = new Button("Resume", buttonSize, new Point(900, 900));
+						JButton resume = rs.add();
+						resume.setLocation(rs.position);
+						resume.setSize(buttonSize.x, buttonSize.y);
+						frame.add(resume);
+						for (int i = 0;; i++) {
+							if (i == 0)
+								resume.repaint();
+							if (resume.getModel().isPressed()) {
+								try {
+									Thread.sleep(100);
+								} catch (InterruptedException e) {
+									Thread.currentThread().interrupt();
+									e.printStackTrace();
+								}
+								resume.setVisible(false);
+								break;
+							}
+						}
+					}
 					B.posit.x = B.posit.x + B.velocity.x;
 					B.posit.y = B.posit.y + B.velocity.y;
 					icon.setLocation(B.posit.topoint());
@@ -114,17 +122,16 @@ public class BrickOut {
 					for (int i = 0; i < 10; i++) {
 						if (R[i].alive) {
 							boolean flag = false;
-							if (R[i] instanceof MultipleLifeBrick) {
+							if (R[i] instanceof MultipleLifeBrick)
 								flag = ((MultipleLifeBrick) R[i]).checkCol(B);
-							} else if (R[i] instanceof HOSBrick) {
+							else if (R[i] instanceof HOSBrick)
 								flag = ((HOSBrick) R[i]).checkCol(B);
-							} else if (R[i] instanceof RefractiveBrick) {
+							else if (R[i] instanceof RefractiveBrick)
 								flag = ((RefractiveBrick) R[i]).checkCol(B);
-							} else if (R[i] instanceof SpinBrick) {
+							else if (R[i] instanceof SpinBrick)
 								flag = ((SpinBrick) R[i]).checkCol(B);
-							} else {
+							else
 								flag = R[i].checkCol(B);
-							}
 							if (flag) {
 								System.out.println("Collision with #" + (i + 1) + ", Ball = " + B.posit + ", Brick = "
 										+ R[i].posit);
@@ -138,24 +145,21 @@ public class BrickOut {
 							R[i].posit.x = frameSize.x;
 						temp[i].setLocation(R[i].posit.topoint());
 					}
-					for (int i = 0; i < 10; i++) {
-						if (!R[i].alive) {
+					for (int i = 0; i < 10; i++)
+						if (!R[i].alive)
 							R[i].posit.x = 3 * frameSize.x;
-						}
-					}
 					try {
 						Thread.sleep(20);
 					} catch (InterruptedException e) {
 						Thread.currentThread().interrupt();
 						e.printStackTrace();
 					}
-					if (cnt == 0)
-						A.moveLeft();
 					if (MainFrame.move == 1)
 						A.moveLeft();
 					else if (MainFrame.move == 2)
 						A.moveRight(frameSize);
 					DisBar.setLocation(A.posit);
+					DisBar.repaint();
 					A.checkCol(B);
 					if (cnt % 100 == 0) {
 						for (int i = 0; i < 10; i++) {
@@ -165,8 +169,8 @@ public class BrickOut {
 							}
 						}
 					}
-					theta = Math.atan(B.velocity.y/B.velocity.x);
-					Theta.setText("Theta :"+theta);
+					theta = Math.atan(B.velocity.y / B.velocity.x);
+					Theta.setText("Theta :" + theta);
 					cnt++;
 				}
 			}

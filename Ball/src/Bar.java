@@ -1,10 +1,18 @@
 import java.awt.Image;
 import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-class Bar {
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+public class Bar {
 	Point size = new Point(300, 50);
 	Point posit;
 	Point move = new Point(20, 0);
@@ -13,6 +21,25 @@ class Bar {
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	ImageIcon Bar2 = new ImageIcon(temp2);
 	JLabel DisBar = new JLabel(Bar2);
+
+	public static void play() {
+		InputStream in = null;
+		try {
+			in = new FileInputStream(
+					"C:/Users/julia/Desktop/SSHS/2017년 2학기/객체지향프로그래밍/BrickOutProject/BrickOUt/Ball/src/kenney_digitalaudio/Audio/tone1.wav");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AudioStream audio = null;
+		try {
+			audio = new AudioStream(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AudioPlayer.player.start(audio);
+	}
 
 	public JLabel add() {
 		return DisBar;
@@ -85,21 +112,35 @@ class Bar {
 				b.velocity.x = -b.velocity.y;
 				b.velocity.y = temp;
 			}
+			play();
 			return true;
 		} else if (checkXcol(b)) {
 			System.out.println("Xcol - Bar");
 			b.velocity.x = -b.velocity.x;
+			play();
 			return true;
 		} else if (checkYcol(b)) {
 			System.out.println("Ycol - Bar");
-			double temp = b.velocity.distance(), theta = Math.atan(b.velocity.y / b.velocity.x);
-			if (MainFrame.move != 0)
-				if ((b.velocity.x > 0) ^ (MainFrame.move == 1))
-					theta = Math.atan(Math.tan(theta) * 2);
-				else if ((b.velocity.x < 0) ^ (MainFrame.move == 2))
-					theta = Math.atan(Math.tan(theta) / 2);
+			double temp = b.velocity.distance(), theta = 0, rand = new Random().nextDouble();
+			if (MainFrame.move > 0) {
+				if ((b.velocity.x > 0) != (MainFrame.move == 1)) {
+					System.out.println("Slowing...");
+					System.out.println(rand);
+					theta = Math.atan(b.velocity.y / b.velocity.x * (rand + 1));
+				} else {
+					System.out.println("Accelerating...");
+					System.out.println(rand);
+					theta = Math.atan(b.velocity.y / b.velocity.x / (rand + 1));
+				}
+			} else
+				theta = Math.atan(b.velocity.y / b.velocity.x);
+			double a = Math.abs(theta);
+			a = Math.min(a, 1.4);
+			a = Math.max(a, 0.3);
+			theta = theta/Math.abs(theta)*a;
 			b.velocity.x = Math.cos(theta) * temp;
 			b.velocity.y = -Math.sin(theta) * temp;
+			play();
 			return true;
 		}
 		return false;

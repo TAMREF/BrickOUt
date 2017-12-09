@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-class MainFrame extends JFrame implements KeyListener {
+public class MainFrame extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = 2801274722167755407L;
 	JTextField tfield = new JTextField();
@@ -54,7 +54,7 @@ class MainFrame extends JFrame implements KeyListener {
 				JLabel label = b.add();
 				label.setLocation(b.size.x * i, b.size.y * j);
 				label.setSize(b.size.x, b.size.y);
-				//add(label);
+				add(label);
 			}
 	}
 

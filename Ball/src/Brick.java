@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -17,7 +18,7 @@ import javax.swing.JLabel;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
-class Brick {
+public class Brick {
 	public Point size = new Point(200, 100); // (width, height)
 	public Point2D posit;
 	ImageIcon Brick = new ImageIcon(getClass().getResource("puzzlepack/element_grey_rectangle.png"));
@@ -25,9 +26,23 @@ class Brick {
 	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
 	JLabel DisBrick = new JLabel(new ImageIcon(temp2));
 	boolean alive = true;
-	public void play() throws IOException {
-		InputStream in = new FileInputStream("/Ball/src/kenney_digitalaudio/Audio/tone1.ogg");
-		AudioStream audio = new AudioStream(in);
+
+	public void play() {
+		InputStream in = null;
+		try {
+			in = new FileInputStream(
+					"C:/Users/julia/Desktop/SSHS/2017년 2학기/객체지향프로그래밍/BrickOutProject/BrickOUt/Ball/src/kenney_digitalaudio/Audio/twoTone2.wav");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AudioStream audio = null;
+		try {
+			audio = new AudioStream(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		AudioPlayer.player.start(audio);
 	}
 
@@ -81,12 +96,6 @@ class Brick {
 			++cnt;
 
 		if (cnt == 1) {
-			try {
-				play();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return true;
 		}
 		return false;
@@ -106,16 +115,19 @@ class Brick {
 				b.velocity.y = temp;
 			}
 			this.alive = false;
+			play();
 			return true;
 		} else if (checkXcol(b)) {
 			System.out.println("Xcol");
 			b.velocity.x = -b.velocity.x;
 			this.alive = false;
+			play();
 			return true;
 		} else if (checkYcol(b)) {
 			System.out.println("Ycol");
 			b.velocity.y = -b.velocity.y;
 			this.alive = false;
+			play();
 			return true;
 		}
 		return false;

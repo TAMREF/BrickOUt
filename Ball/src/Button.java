@@ -18,13 +18,20 @@ public class Button {
 	boolean pressed = false;
 	String text = new String();
 
-	Button(String s, Point p) throws IOException {
+	Button(String s, Point p, Point q){
 		text = s;
 		size = p;
+		position = q;
 	}
 
-	public JButton add() throws Exception {
-		BufferedImage temp = ImageIO.read(getClass().getResource("puzzlepack/buttonDefault.png"));
+	public JButton add(){
+		BufferedImage temp = null;
+		try {
+			temp = ImageIO.read(getClass().getResource("puzzlepack/buttonDefault.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		BufferedImage image1 = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 		AffineTransform at = new AffineTransform();
 		at.scale(size.x / (double) temp.getWidth(), size.y / (double) temp.getHeight());
@@ -42,7 +49,12 @@ public class Button {
 		g1.dispose();
 		g.dispose();
 		buttonLabel = new JButton(new ImageIcon(image3));
-		temp = ImageIO.read(getClass().getResource("puzzlepack/buttonSelected.png"));
+		try {
+			temp = ImageIO.read(getClass().getResource("puzzlepack/buttonSelected.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		image1 = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 		at = new AffineTransform();
 		at.scale(size.x / (double) temp.getWidth(), size.y / (double) temp.getHeight());

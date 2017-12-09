@@ -4,7 +4,7 @@ import java.awt.Point;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-class Ball {
+public class Ball {
 	int diameter = 25;
 	Point2D velocity;
 	Point2D posit;
@@ -15,14 +15,26 @@ class Ball {
 	JLabel DisBall = new JLabel(Ball2);
 
 	public void checkCol(Point b) {
-		if (posit.x <= 0)
+		boolean bo = false;
+		if (posit.x <= 0) {
+			bo = true;
 			velocity.x = Math.abs(velocity.x);
-		if (posit.x + diameter >= b.x)
+		}
+		if (posit.x + diameter >= b.x) {
+			bo = true;
 			velocity.x = -Math.abs(velocity.x);
-		if (posit.y <= 0)
+		}
+		if (posit.y <= 0) {
+			bo = true;
 			velocity.y = Math.abs(velocity.y);
+		}
 		if (posit.y + diameter >= b.y)
+		{
+			bo = true;
 			velocity.y = -Math.abs(velocity.y);
+		}
+		if (bo)
+			Bar.play();
 	}
 
 	public JLabel add() {
