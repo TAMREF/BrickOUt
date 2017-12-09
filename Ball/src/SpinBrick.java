@@ -17,6 +17,7 @@ class SpinBrick extends Brick {
 	public SpinBrick(Point2D posit) {
 		super(posit);
 	}
+
 	@Override
 	public boolean checkCol(Ball b) {
 		double speed = b.velocity.distance(), angle = spin();

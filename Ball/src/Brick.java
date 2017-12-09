@@ -122,7 +122,6 @@ public class Brick {
 		return false;
 	}
 
-
 	public boolean update(Ball b, int cnt) {
 		boolean flag = checkCol(b);
 		if (cnt % 100 == 0)
