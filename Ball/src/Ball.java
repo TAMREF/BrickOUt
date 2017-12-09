@@ -8,11 +8,8 @@ public class Ball {
 	int diameter = 25;
 	Point2D velocity;
 	Point2D posit;
-	ImageIcon Ball = new ImageIcon(getClass().getResource("puzzlepack/ballGrey.png"));
-	Image temp = Ball.getImage();
-	Image temp2 = temp.getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH);
-	ImageIcon Ball2 = new ImageIcon(temp2);
-	JLabel DisBall = new JLabel(Ball2);
+	JLabel DisBall = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/ballGrey.png"))
+			.getImage().getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH)));
 
 	public void checkCol(Point b) {
 		boolean bo = false;
@@ -36,19 +33,21 @@ public class Ball {
 			Bar.play();
 	}
 
-	public JLabel add() {
-		DisBall.setLocation(posit.topoint());
-		DisBall.setSize(diameter, diameter);
-		return DisBall;
-	}
-
 	Ball(Point2D pos, Point2D vel) {
 		this.posit = pos;
 		this.velocity = vel;
+		DisBall.setLocation(posit.topoint());
+		DisBall.setSize(diameter, diameter);
 	}
 
 	Ball() {
 		this(new Point2D(0, 0), new Point2D(0, 0));
 	}
 
+	public void update() {
+		this.posit.x += this.velocity.x;
+		this.posit.y += this.velocity.y;
+		this.DisBall.setLocation(this.posit.topoint());
+		checkCol(MainFrame.size);
+	}
 }

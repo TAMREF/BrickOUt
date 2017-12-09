@@ -6,9 +6,11 @@ import javax.swing.JLabel;
 
 public class Background {
 	Point size = new Point(50, 50);
+	String s1 = "mappack/PNG/mapTile_", s2 = ".png";
 
-	public JLabel add() {
-		return new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("mappack/PNG/mapTile_171.png")).getImage().getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
+	public JLabel add(int a) {
+		return new JLabel(new ImageIcon(new ImageIcon(getClass().getResource(s1+Integer.toString(a)+s2)).getImage().getScaledInstance(size.x,
+				size.y, Image.SCALE_SMOOTH)));
 	}
 
 	Background(Point s) {

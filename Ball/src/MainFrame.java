@@ -11,7 +11,7 @@ public class MainFrame extends JFrame implements KeyListener {
 	private static final long serialVersionUID = 2801274722167755407L;
 	JTextField tfield = new JTextField();
 	static int move = 0;
-	Point size;
+	static Point size;
 
 	MainFrame(String Title, Point p) {
 		size = p;
@@ -48,13 +48,13 @@ public class MainFrame extends JFrame implements KeyListener {
 			move = 0;
 	}
 
-	public void fill(Background b) {
-		for (int i = 0; i < size.x / b.size.x; i++)
-			for (int j = 0; j < size.y / b.size.y; j++) {
-				JLabel label = b.add();
-				label.setLocation(b.size.x * i, b.size.y * j);
-				label.setSize(b.size.x, b.size.y);
-				add(label);
+	public void fill(Point backSize, JLabel[][] backLabel) {
+		for (int i = 0; i < size.x / backSize.x; i++)
+			for (int j = 0; j < size.y / backSize.y; j++) {
+				backLabel[i][j] = new Background(backSize).add(187);
+				backLabel[i][j].setLocation(backSize.x * i, backSize.y * j);
+				backLabel[i][j].setSize(backSize.x, backSize.y);
+				add(backLabel[i][j], 0);
 			}
 	}
 

@@ -16,11 +16,8 @@ public class Bar {
 	Point size = new Point(300, 50);
 	Point posit;
 	Point move = new Point(20, 0);
-	ImageIcon Bar = new ImageIcon(getClass().getResource("puzzlepack/paddleBlu.png"));
-	Image temp = Bar.getImage();
-	Image temp2 = temp.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH);
-	ImageIcon Bar2 = new ImageIcon(temp2);
-	JLabel DisBar = new JLabel(Bar2);
+	JLabel DisBar = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/paddleBlu.png"))
+			.getImage().getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 
 	public static void play() {
 		InputStream in = null;
@@ -41,18 +38,24 @@ public class Bar {
 		AudioPlayer.player.start(audio);
 	}
 
-	public JLabel add() {
-		DisBar.setLocation(posit);
-		DisBar.setSize(size.x, size.y);
-		return DisBar;
-	}
-
 	Bar(Point b) {
 		this.posit = b;
+		DisBar.setLocation(posit);
+		DisBar.setSize(size.x, size.y);
 	}
 
 	Bar() {
 		this(new Point(0, 0));
+	}
+
+	public void update(Ball b) {
+		if (MainFrame.move == 1)
+			moveLeft();
+		else if (MainFrame.move == 2)
+			moveRight(MainFrame.size);
+		DisBar.setLocation(posit);
+		DisBar.repaint();
+		checkCol(b);
 	}
 
 	public void moveLeft() {
@@ -140,12 +143,11 @@ public class Bar {
 			a = Math.min(a, 1.4);
 			a = Math.max(a, 0.3);
 			theta = theta / Math.abs(theta) * a;
-			b.velocity.x = b.velocity.x/Math.abs(b.velocity.x)*Math.abs(Math.cos(theta) * temp);
+			b.velocity.x = b.velocity.x / Math.abs(b.velocity.x) * Math.abs(Math.cos(theta) * temp);
 			b.velocity.y = -Math.abs(Math.sin(theta) * temp);
 			play();
 			return true;
 		}
 		return false;
-
 	}
 }

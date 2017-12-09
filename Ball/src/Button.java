@@ -18,13 +18,10 @@ public class Button {
 	boolean pressed = false;
 	String text = new String();
 
-	Button(String s, Point p, Point q){
+	Button(String s, Point p, Point q) {
 		text = s;
 		size = p;
 		position = q;
-	}
-
-	public JButton add(){
 		BufferedImage temp = null;
 		try {
 			temp = ImageIO.read(getClass().getResource("puzzlepack/buttonDefault.png"));
@@ -74,7 +71,6 @@ public class Button {
 		buttonLabel.setPressedIcon(new ImageIcon(image3));
 		buttonLabel.setLocation(position);
 		buttonLabel.setSize(size.x, size.y);
-		return buttonLabel;
 	}
 
 }
