@@ -9,8 +9,8 @@ public class Background {
 	String s1 = "mappack/PNG/mapTile_", s2 = ".png";
 
 	public JLabel add(int a) {
-		return new JLabel(new ImageIcon(new ImageIcon(getClass().getResource(s1+Integer.toString(a)+s2)).getImage().getScaledInstance(size.x,
-				size.y, Image.SCALE_SMOOTH)));
+		return new JLabel(new ImageIcon(new ImageIcon(getClass().getResource(s1 + Integer.toString(a) + s2)).getImage()
+				.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 	}
 
 	Background(Point s) {

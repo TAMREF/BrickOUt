@@ -108,15 +108,9 @@ public class Bar {
 
 		if (checkXYcol(b)) {
 			System.out.println("XYcol - Bar");
-			if ((b.velocity.x > 0) ^ (b.velocity.y > 0)) {
-				double temp = b.velocity.x;
-				b.velocity.x = -b.velocity.y;
-				b.velocity.y = -temp;
-			} else {
-				double temp = -b.velocity.x;
-				b.velocity.x = -b.velocity.y;
-				b.velocity.y = temp;
-			}
+			double temp = b.velocity.x;
+			b.velocity.x = b.velocity.x / Math.abs(b.velocity.x) * b.velocity.y;
+			b.velocity.y = -Math.abs(temp);
 			play();
 			return true;
 		} else if (checkXcol(b)) {

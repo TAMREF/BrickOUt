@@ -9,13 +9,15 @@ public class MultipleLifeBrick extends Brick {
 	public MultipleLifeBrick(int life, Point2D posit) {
 		super(posit);
 		this.life = life;
+		disBrick.setLocation(posit.topoint());
+		disBrick.setSize(size.x, size.y);
 	}
 
 	public MultipleLifeBrick(Point2D posit) {
 		this(defaultLife, posit);
 	}
 
-	JLabel DisBrick = new JLabel(
+	JLabel disBrick = new JLabel(
 			new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/element_green_rectangle.png")).getImage()
 					.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 
@@ -57,7 +59,7 @@ public class MultipleLifeBrick extends Brick {
 			this.goDown();
 		if (flag) {
 			this.alive = false;
-			this.DisBrick.setVisible(false);
+			this.disBrick.setVisible(false);
 		}
 		return flag;
 	}

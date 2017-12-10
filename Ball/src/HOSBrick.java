@@ -16,6 +16,8 @@ public class HOSBrick extends Brick {
 	public HOSBrick(Point2D posit) {
 		super(posit);
 		this.pair = null;
+		disBrick.setLocation(posit.topoint());
+		disBrick.setSize(size.x, size.y);
 	}
 
 	public void entangle(HOSBrick B1, HOSBrick B2) throws Exception {

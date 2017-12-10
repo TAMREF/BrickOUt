@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 
 class SpinBrick extends Brick {
 	public static Random RandomAngleGenerator = new Random();
-	JLabel DisBrick = new JLabel(
+	JLabel disBrick = new JLabel(
 			new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/element_red_rectangle.png")).getImage()
 					.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 
@@ -16,6 +16,8 @@ class SpinBrick extends Brick {
 
 	public SpinBrick(Point2D posit) {
 		super(posit);
+		disBrick.setLocation(posit.topoint());
+		disBrick.setSize(size.x, size.y);
 	}
 
 	@Override
@@ -36,7 +38,7 @@ class SpinBrick extends Brick {
 			this.goDown();
 		if (flag) {
 			this.alive = false;
-			this.DisBrick.setVisible(false);
+			this.disBrick.setVisible(false);
 		}
 		return flag;
 	}
