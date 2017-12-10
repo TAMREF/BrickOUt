@@ -1,5 +1,4 @@
 import java.awt.Point;
-import javax.swing.JLabel;
 
 public class BrickOut {
 	public static void sleep(int cnt) {
@@ -11,120 +10,111 @@ public class BrickOut {
 		}
 	}
 
-	static Brick[][] set = new Brick[5][];
+	static Brick[] bricks = null;
 	static int[] max = new int[5];
+	static int cnt = 0;
+	static MainFrame frame = new MainFrame("BrickOut", new Point(3000, 2000));
+	static Ball ball = null;
+	static Bar bar = null;
+	static int stage = 0;
 
 	public static void init() {
-		set[0] = new Brick[10];
-		max[0] = 1000;
-		for (int i = 0; i < 10; i++)
-			set[0][i] = new Brick(new Point2D(400 + i * 220, 200));
-		set[1] = new SpinBrick[10];
-		max[1] = 1000;
-		for (int i = 0; i < 10; i++)
-			set[1][i] = new SpinBrick(new Point2D(400 + i * 220, 200));
-		set[2] = new MultipleLifeBrick[10];
-		max[2] = 1000;
-		for (int i = 0; i < 10; i++)
-			set[2][i] = new MultipleLifeBrick(new Point2D(400 + i * 220, 200));
-		set[3] = new RefractiveBrick[10];
-		max[3] = 1000;
-		for (int i = 0; i < 10; i++)
-			set[3][i] = new RefractiveBrick(new Point2D(400 + i * 220, 200));
-		set[4] = new HOSBrick[10];
-		max[4] = 1000;
-		for (int i = 0; i < 10; i++)
-			set[4][i] = new HOSBrick(new Point2D(400 + i * 220, 200));
-
+		if (stage == 0) {
+			bricks = new Brick[10];
+			max[0] = 1000;
+			for (int i = 0; i < 10; i++)
+				bricks[i] = new Brick(new Point2D(400 + i * 220, 200));
+		} else if (stage == 1) {
+			bricks = new SpinBrick[10];
+			max[1] = 1000;
+			for (int i = 0; i < 10; i++)
+				bricks[i] = new SpinBrick(new Point2D(400 + i * 220, 200));
+		} else if (stage == 2) {
+			bricks = new MultipleLifeBrick[10];
+			max[2] = 1000;
+			for (int i = 0; i < 10; i++)
+				bricks[i] = new MultipleLifeBrick(new Point2D(400 + i * 220, 200));
+		} else if (stage == 3) {
+			bricks = new RefractiveBrick[10];
+			max[3] = 1000;
+			for (int i = 0; i < 10; i++)
+				bricks[i] = new RefractiveBrick(new Point2D(400 + i * 220, 200));
+		} else if (stage == 4) {
+			bricks = new HOSBrick[10];
+			max[4] = 1000;
+			for (int i = 0; i < 10; i++)
+				bricks[i] = new HOSBrick(new Point2D(400 + i * 220, 200));
+			for (int i = 0; i < 5; i++)
+				((HOSBrick) bricks[i]).entangle((HOSBrick) bricks[i], (HOSBrick) bricks[9 - i]);
+		}
 	}
 
-	public static void stageInit(MainFrame frame, int stage) {
-		for (Brick i : set[stage])
-			if (i instanceof SpinBrick)
-				frame.add(((SpinBrick) i).disBrick, 0);
-			else if (i instanceof MultipleLifeBrick)
-				frame.add(((MultipleLifeBrick) i).disBrick, 0);
-			else if (i instanceof HOSBrick)
-				frame.add(((HOSBrick) i).disBrick, 0);
-			else if (i instanceof RefractiveBrick)
-				frame.add(((RefractiveBrick) i).disBrick, 0);
-			else
-				frame.add(i.disBrick, 0);
+	public static void die() {
+		Label winLabel = new Label(new Point(950, 700), new Point(1100, 100), "Oh No! You Died! Restart Or Quit?");
+		Button restart = new Button("Restart", new Point(500, 100), new Point(1250, 1000));
+		Button quit = new Button("Quit", new Point(500, 100), new Point(1250, 1200));
+		while (!restart.button.getModel().isPressed() && !quit.button.getModel().isPressed())
+			sleep(25);
+		if (quit.button.getModel().isPressed()) {
+			sleep(100);
+			System.exit(0);
+		}
+		frame.remove(winLabel.label);
+		frame.remove(restart.button);
+		frame.remove(quit.button);
+		sleep(100);
+		stage = 0;
+	}
+
+	public static boolean brickUpdate(Brick i) {
+		boolean flag = false;
+		if (i instanceof HOSBrick)
+			flag = ((HOSBrick) i).update();
+		else if (i instanceof MultipleLifeBrick)
+			flag = ((MultipleLifeBrick) i).update();
+		else if (i instanceof RefractiveBrick)
+			flag = ((RefractiveBrick) i).update();
+		else if (i instanceof SpinBrick)
+			flag = ((SpinBrick) i).update();
+		else
+			flag = i.update();
+		return flag;
 	}
 
 	public static void main(String args[]) {
 		Point backSize = new Point(100, 100);
 		Point buttonSize = new Point(1200, 100);
-		MainFrame frame = new MainFrame("BrickOut", new Point(3000, 2000));
-		JLabel[][] backLabel = new JLabel[MainFrame.size.x / backSize.x][MainFrame.size.y / backSize.y];
-		frame.fill(backSize, backLabel);
+		frame.fill(backSize, 187);
 		Button st = new Button("Start", buttonSize, new Point(900, 900));
-		frame.add(st.buttonLabel, 0);
-		for (JLabel[] i : backLabel)
-			for (JLabel j : i)
-				j.repaint();
-		st.buttonLabel.repaint();
-		while (!st.buttonLabel.getModel().isPressed())
+		while (!st.button.getModel().isPressed())
 			sleep(25);
 		sleep(100);
-		st.buttonLabel.setVisible(false);
-		init();
+		st.button.setVisible(false);
 		int maxStage = 5;
-		for (int stage = 0; stage < maxStage; stage++) {
+		for (stage = 0; stage < maxStage; stage++) {
+			//frame.fill(backSize, 171);
 			Point2D initBallPos = new Point2D(1200, 800);
-			Point2D initBallVel = new Point2D(5.0, -10.0);
-			Ball ball = new Ball(initBallPos, initBallVel);
-			frame.add(ball.DisBall, 0);
-			stageInit(frame, stage);
-			Brick[] bricks = set[stage];
+			Point2D initBallVel = new Point2D(10.0, -20.0);
+			ball = new Ball(initBallPos, initBallVel);
 			int score = 0;
 			Label scoreLabel = new Label(new Point(100, 100), "Score :" + 0);
-			frame.add(scoreLabel.label, 0);
 			Label thetaLabel = new Label(new Point(100, 200), "Theta :" + 0);
-			frame.add(thetaLabel.label, 0);
-			Bar bar = new Bar(new Point(1350, 1200));
-			frame.add(bar.DisBar, 0);
+			bar = new Bar(new Point(1350, 1200));
 			Button ps = new Button("Pause", new Point(300, 100), new Point(2600, 300));
-			frame.add(ps.buttonLabel, 0);
-			ps.buttonLabel.repaint();
 			boolean cont = true;
-			for (int cnt = 0; cont; cnt++) {
-				if (ps.buttonLabel.getModel().isPressed()) {
+			init();
+			for (cnt = 0; cont; cnt++) {
+				if (ps.button.getModel().isPressed()) {
 					Button rs = new Button("Resume", buttonSize, new Point(900, 900));
-					frame.add(rs.buttonLabel, 0);
-					for (int i = 0;; i++) {
-						if (i == 0)
-							rs.buttonLabel.repaint();
-						if (rs.buttonLabel.getModel().isPressed()) {
-							sleep(100);
-							rs.buttonLabel.setVisible(false);
-							break;
-						}
-					}
+					while (!rs.button.getModel().isPressed())
+						sleep(25);
+					sleep(100);
+					frame.remove(rs.button);
 				}
 				ball.update();
 				for (Brick i : bricks)
-					if (i.alive) {
-						boolean flag = false;
-						if (i instanceof HOSBrick) {
-							flag = ((HOSBrick) i).update(ball, cnt);
-							((HOSBrick) i).disBrick.repaint();
-						} else if (i instanceof MultipleLifeBrick) {
-							flag = ((MultipleLifeBrick) i).update(ball, cnt);
-							((MultipleLifeBrick) i).disBrick.repaint();
-						} else if (i instanceof RefractiveBrick) {
-							flag = ((RefractiveBrick) i).update(ball, cnt);
-							((RefractiveBrick) i).disBrick.repaint();
-						} else if (i instanceof SpinBrick) {
-							flag = ((SpinBrick) i).update(ball, cnt);
-							((SpinBrick) i).disBrick.repaint();
-						} else {
-							flag = i.update(ball, cnt);
-							i.disBrick.repaint();
-						}
-						if (flag)
-							scoreLabel.label.setText("Score: " + (score += (i instanceof HOSBrick ? 200 : 100)));
-					}
+					if (i.alive && brickUpdate(i))
+						scoreLabel.label.setText("Score: " + (score += (i instanceof HOSBrick ? 200 : 100)));
 				bar.update(ball);
 				thetaLabel.label.setText("Theta :" + Math.atan(ball.velocity.y / ball.velocity.x));
 				sleep(20);
@@ -132,28 +122,25 @@ public class BrickOut {
 					if (stage != maxStage - 1) {
 						Label winLabel = new Label(new Point(950, 700), new Point(1100, 100),
 								"You Won! Continue To Next Stage.");
-						frame.add(winLabel.label, 0);
 						Button contButton = new Button("Continue", new Point(500, 100), new Point(1250, 1000));
-						frame.add(contButton.buttonLabel, 0);
-						winLabel.label.repaint();
-						contButton.buttonLabel.repaint();
-						for (; cont;) {
-							if (contButton.buttonLabel.getModel().isPressed()) {
-								sleep(100);
-								winLabel.label.setVisible(false);
-								contButton.buttonLabel.setVisible(false);
-								bar.DisBar.setVisible(false);
-								ball.DisBall.setVisible(false);
-								scoreLabel.label.setVisible(false);
-								thetaLabel.label.setVisible(false);
-								cont = false;
-							}
-						}
+						while (!contButton.button.getModel().isPressed())
+							sleep(25);
+						sleep(100);
+						frame.remove(winLabel.label);
+						frame.remove(contButton.button);
+						frame.remove(bar.disBar);
+						frame.remove(ball.disBall);
+						frame.remove(scoreLabel.label);
+						frame.remove(thetaLabel.label);
+						cont = false;
 					} else {
-						Label winLabel = new Label(new Point(950, 700), new Point(1100, 100),
+						Label winLabel = new Label(new Point(850, 700), new Point(1300, 100),
 								"Congratulations! You Cleared The Game!");
-						frame.add(winLabel.label, 0);
-						winLabel.label.repaint();
+						Button restart = new Button("Restart", new Point(500, 100), new Point(1250, 1000));
+						while (!restart.button.getModel().isPressed())
+							sleep(25);
+						stage = -1;
+						frame.remove(winLabel.label);
 						cont = false;
 					}
 			}

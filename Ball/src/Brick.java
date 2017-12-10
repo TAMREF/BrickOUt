@@ -50,6 +50,8 @@ public class Brick {
 		this.posit = posit;
 		disBrick.setLocation(posit.topoint());
 		disBrick.setSize(size.x, size.y);
+		BrickOut.frame.add(disBrick, 0);
+		disBrick.repaint();
 	}
 
 	protected boolean checkYcol(Ball b) { // checks whether velocity.y should be flipped
@@ -93,7 +95,6 @@ public class Brick {
 	public boolean checkCol(Ball b) {
 
 		if (checkXYcol(b)) {
-			System.out.println("XYcol");
 			if ((b.velocity.x > 0) ^ (b.velocity.y > 0)) {
 				double temp = b.velocity.x;
 				b.velocity.x = -b.velocity.y;
@@ -107,13 +108,11 @@ public class Brick {
 			play();
 			return true;
 		} else if (checkXcol(b)) {
-			System.out.println("Xcol");
 			b.velocity.x = -b.velocity.x;
 			this.alive = false;
 			play();
 			return true;
 		} else if (checkYcol(b)) {
-			System.out.println("Ycol");
 			b.velocity.y = -b.velocity.y;
 			this.alive = false;
 			play();
@@ -122,14 +121,13 @@ public class Brick {
 		return false;
 	}
 
-	public boolean update(Ball b, int cnt) {
-		boolean flag = checkCol(b);
-		if (cnt % 100 == 0)
+	public boolean update() {
+		if (BrickOut.cnt % 100 == 0)
 			this.goDown();
-		if (flag) {
-			this.alive = false;
-			this.disBrick.setVisible(false);
-		}
-		return flag;
+		if (checkCol(BrickOut.ball))
+			BrickOut.frame.remove(this.disBrick);
+		else
+			this.disBrick.repaint();
+		return !this.alive;
 	}
 }

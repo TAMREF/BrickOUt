@@ -16,7 +16,7 @@ public class Bar {
 	Point size = new Point(300, 50);
 	Point posit;
 	Point move = new Point(20, 0);
-	JLabel DisBar = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/paddleBlu.png"))
+	JLabel disBar = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/paddleBlu.png"))
 			.getImage().getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 
 	public static void play() {
@@ -40,8 +40,10 @@ public class Bar {
 
 	Bar(Point b) {
 		this.posit = b;
-		DisBar.setLocation(posit);
-		DisBar.setSize(size.x, size.y);
+		disBar.setLocation(posit);
+		disBar.setSize(size.x, size.y);
+		BrickOut.frame.add(disBar, 0);
+		disBar.repaint();
 	}
 
 	Bar() {
@@ -53,8 +55,8 @@ public class Bar {
 			moveLeft();
 		else if (MainFrame.move == 2)
 			moveRight(MainFrame.size);
-		DisBar.setLocation(posit);
-		DisBar.repaint();
+		disBar.setLocation(posit);
+		disBar.repaint();
 		checkCol(b);
 	}
 
@@ -107,30 +109,22 @@ public class Bar {
 	public boolean checkCol(Ball b) {
 
 		if (checkXYcol(b)) {
-			System.out.println("XYcol - Bar");
 			double temp = b.velocity.x;
 			b.velocity.x = b.velocity.x / Math.abs(b.velocity.x) * b.velocity.y;
 			b.velocity.y = -Math.abs(temp);
 			play();
 			return true;
 		} else if (checkXcol(b)) {
-			System.out.println("Xcol - Bar");
 			b.velocity.x = -b.velocity.x;
 			play();
 			return true;
 		} else if (checkYcol(b)) {
-			System.out.println("Ycol - Bar");
 			double temp = b.velocity.distance(), theta = 0, rand = new Random().nextDouble();
 			if (MainFrame.move > 0) {
-				if ((b.velocity.x > 0) != (MainFrame.move == 1)) {
-					System.out.println("Slowing...");
-					System.out.println(rand);
+				if ((b.velocity.x > 0) != (MainFrame.move == 1))
 					theta = Math.atan(b.velocity.y / b.velocity.x * (rand + 1));
-				} else {
-					System.out.println("Accelerating...");
-					System.out.println(rand);
+				else
 					theta = Math.atan(b.velocity.y / b.velocity.x / (rand + 1));
-				}
 			} else
 				theta = Math.atan(b.velocity.y / b.velocity.x);
 			double a = Math.abs(theta);

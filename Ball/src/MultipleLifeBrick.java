@@ -9,8 +9,10 @@ public class MultipleLifeBrick extends Brick {
 	public MultipleLifeBrick(int life, Point2D posit) {
 		super(posit);
 		this.life = life;
-		disBrick.setLocation(posit.topoint());
-		disBrick.setSize(size.x, size.y);
+		this.disBrick.setLocation(posit.topoint());
+		this.disBrick.setSize(size.x, size.y);
+		BrickOut.frame.add(this.disBrick, 0);
+		this.disBrick.repaint();
 	}
 
 	public MultipleLifeBrick(Point2D posit) {
@@ -22,8 +24,12 @@ public class MultipleLifeBrick extends Brick {
 					.getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 
 	@Override
-	public boolean checkCol(Ball b) {
+	public void goDown() {
+		this.posit.y += 20;
+		this.disBrick.setLocation(this.posit.topoint());
+	}
 
+	public boolean checkCol(Ball b) {
 		if (checkXYcol(b)) {
 			b.velocity.x = -b.velocity.x;
 			b.velocity.y = -b.velocity.y;
@@ -53,14 +59,13 @@ public class MultipleLifeBrick extends Brick {
 		return false;
 	}
 
-	public boolean update(Ball b, int cnt) {
-		boolean flag = checkCol(b);
-		if (cnt % 100 == 0)
+	public boolean update() {
+		if (BrickOut.cnt % 100 == 0)
 			this.goDown();
-		if (flag) {
-			this.alive = false;
-			this.disBrick.setVisible(false);
-		}
-		return flag;
+		if (this.checkCol(BrickOut.ball) && this.life == 0)
+			BrickOut.frame.remove(this.disBrick);
+		else
+			this.disBrick.repaint();
+		return !this.alive;
 	}
 }

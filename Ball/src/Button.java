@@ -14,7 +14,7 @@ import javax.swing.JButton;
 public class Button {
 	Point size;
 	Point position;
-	JButton buttonLabel = new JButton();
+	JButton button = new JButton();
 	boolean pressed = false;
 	String text = new String();
 
@@ -45,7 +45,7 @@ public class Button {
 		g.drawImage(image2, (image1.getWidth() - image2.getWidth()) / 2, 0, null);
 		g1.dispose();
 		g.dispose();
-		buttonLabel = new JButton(new ImageIcon(image3));
+		button = new JButton(new ImageIcon(image3));
 		try {
 			temp = ImageIO.read(getClass().getResource("puzzlepack/buttonSelected.png"));
 		} catch (IOException e) {
@@ -68,9 +68,11 @@ public class Button {
 		g.drawImage(image2, (image1.getWidth() - image2.getWidth()) / 2, 0, null);
 		g1.dispose();
 		g.dispose();
-		buttonLabel.setPressedIcon(new ImageIcon(image3));
-		buttonLabel.setLocation(position);
-		buttonLabel.setSize(size.x, size.y);
+		button.setPressedIcon(new ImageIcon(image3));
+		button.setLocation(position);
+		button.setSize(size.x, size.y);
+		BrickOut.frame.add(button, 0);
+		button.repaint();
 	}
 
 }

@@ -48,14 +48,14 @@ public class MainFrame extends JFrame implements KeyListener {
 			move = 0;
 	}
 
-	public void fill(Point backSize, JLabel[][] backLabel) {
+	public void fill(Point backSize, int a) {
+		JLabel[][] background = new JLabel[size.x / backSize.x][size.y / backSize.y];
 		for (int i = 0; i < size.x / backSize.x; i++)
-			for (int j = 0; j < size.y / backSize.y; j++) {
-				backLabel[i][j] = new Background(backSize).add(187);
-				backLabel[i][j].setLocation(backSize.x * i, backSize.y * j);
-				backLabel[i][j].setSize(backSize.x, backSize.y);
-				add(backLabel[i][j], 0);
-			}
+			for (int j = 0; j < size.y / backSize.y; j++)
+				background[i][j] = new Background(backSize, new Point(backSize.x * i, backSize.y * j), a).back;
+		for (JLabel[] i : background)
+			for (JLabel j : i)
+				j.repaint();
 	}
 
 	MainFrame() {

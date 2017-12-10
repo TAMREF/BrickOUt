@@ -16,11 +16,18 @@ class SpinBrick extends Brick {
 
 	public SpinBrick(Point2D posit) {
 		super(posit);
-		disBrick.setLocation(posit.topoint());
-		disBrick.setSize(size.x, size.y);
+		this.disBrick.setLocation(posit.topoint());
+		this.disBrick.setSize(size.x, size.y);
+		BrickOut.frame.add(this.disBrick, 0);
+		this.disBrick.repaint();
 	}
 
 	@Override
+	public void goDown() {
+		this.posit.y += 20;
+		this.disBrick.setLocation(this.posit.topoint());
+	}
+
 	public boolean checkCol(Ball b) {
 		double speed = b.velocity.distance(), angle = spin();
 		if (checkXYcol(b) || checkXcol(b) || checkYcol(b)) {
@@ -32,14 +39,13 @@ class SpinBrick extends Brick {
 		return false;
 	}
 
-	public boolean update(Ball b, int cnt) {
-		boolean flag = checkCol(b);
-		if (cnt % 100 == 0)
+	public boolean update() {
+		if (BrickOut.cnt % 100 == 0)
 			this.goDown();
-		if (flag) {
-			this.alive = false;
-			this.disBrick.setVisible(false);
-		}
-		return flag;
+		if (this.checkCol(BrickOut.ball))
+			BrickOut.frame.remove(this.disBrick);
+		else
+			this.disBrick.repaint();
+		return !this.alive;
 	}
 }

@@ -13,6 +13,8 @@ public class Label {
 		label.setLocation(position);
 		label.setText(text);
 		label.setSize(size.x, size.y);
+		BrickOut.frame.add(label, 0);
+		label.repaint();
 	}
 
 	Label(Point position, String text) {
