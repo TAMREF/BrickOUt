@@ -62,9 +62,10 @@ public class MultipleLifeBrick extends Brick {
 	public boolean update() {
 		if (BrickOut.cnt % 100 == 0)
 			this.goDown();
-		if (this.checkCol(BrickOut.ball) && this.life == 0)
+		if (this.checkCol(BrickOut.ball) && this.life == 0) {
 			BrickOut.frame.remove(this.disBrick);
-		else
+			BrickOut.frame.repaint();
+		} else
 			this.disBrick.repaint();
 		return !this.alive;
 	}

@@ -130,7 +130,10 @@ public class Brick {
 		if (BrickOut.cnt % 100 == 0)
 			this.goDown();
 		if (checkCol(BrickOut.ball))
+		{
 			BrickOut.frame.remove(this.disBrick);
+			BrickOut.frame.repaint();
+		}
 		else
 			this.disBrick.repaint();
 		return !this.alive;

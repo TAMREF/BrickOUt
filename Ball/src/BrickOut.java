@@ -10,53 +10,59 @@ public class BrickOut {
 		}
 	}
 
-	static Brick[] bricks = null;
-	static int[] max = new int[5];
+	static Brick[] bricks = new Brick[10];
+	static int[] max = { 1000, 1000, 1000, 1000, 1000 };
 	static int cnt = 0;
 	static MainFrame frame = new MainFrame("BrickOut", new Point(3000, 2000));
 	static Ball ball = null;
 	static Bar bar = null;
 	static int stage = 0;
 	static boolean cont = true;
+	static Label scoreLabel;
+	static Label thetaLabel;
 
 	public static void init() {
 		if (stage == 0) {
-			bricks = new Brick[10];
-			max[0] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new Brick(new Point2D(400 + i * 220, 200), true);
+				bricks[i] = new Brick(new Point2D(410 + i * 220, 200), true);
 		} else if (stage == 1) {
-			bricks = new SpinBrick[10];
-			max[1] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new SpinBrick(new Point2D(400 + i * 220, 200));
+				bricks[i] = new SpinBrick(new Point2D(410 + i * 220, 200));
 		} else if (stage == 2) {
-			bricks = new MultipleLifeBrick[10];
-			max[2] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new MultipleLifeBrick(new Point2D(400 + i * 220, 200));
+				bricks[i] = new MultipleLifeBrick(new Point2D(410 + i * 220, 200));
 		} else if (stage == 3) {
-			bricks = new RefractiveBrick[10];
-			max[3] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new RefractiveBrick(new Point2D(400 + i * 220, 200));
+				bricks[i] = new RefractiveBrick(new Point2D(410 + i * 220, 200));
 		} else if (stage == 4) {
-			bricks = new HOSBrick[10];
-			max[4] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new HOSBrick(new Point2D(400 + i * 220, 200));
+				bricks[i] = new HOSBrick(new Point2D(410 + i * 220, 200));
 			for (int i = 0; i < 5; i++)
 				((HOSBrick) bricks[i]).entangle((HOSBrick) bricks[i], (HOSBrick) bricks[9 - i]);
 		}
 	}
 
 	public static void die() {
-		new Label(new Point(1075, 700), new Point(950, 100), "Oh No! You Died! Please Quit!");
+		Label dead = new Label(new Point(950, 700), new Point(1100, 100), "Oh No! You Died! Restart Or Quit!");
 		Button quit = new Button("Quit", new Point(500, 100), new Point(1250, 1200));
-		while (!quit.button.getModel().isPressed())
+		Button restart = new Button("Restart", new Point(500, 100), new Point(1250, 1000));
+		while (!quit.button.getModel().isPressed() && !restart.button.getModel().isPressed())
 			sleep(25);
-		sleep(100);
-		System.exit(0);
+		if (quit.button.getModel().isPressed()) {
+			sleep(100);
+			System.exit(0);
+		}
+		frame.remove(dead.label);
+		frame.remove(quit.button);
+		frame.remove(restart.button);
+		frame.remove(scoreLabel.label);
+		frame.remove(thetaLabel.label);
+		frame.remove(bar.disBar);
+		frame.remove(ball.disBall);
+		for (Brick i : bricks)
+			frame.remove(i.disBrick);
+		frame.repaint();
+		stage = -1;
 	}
 
 	public static boolean brickUpdate(Brick i) {
@@ -90,8 +96,8 @@ public class BrickOut {
 			Point2D initBallVel = new Point2D(6.0, -12.0);
 			ball = new Ball(initBallPos, initBallVel);
 			int score = 0;
-			Label scoreLabel = new Label(new Point(100, 100), "Score :" + 0);
-			Label thetaLabel = new Label(new Point(100, 200), "Theta :" + 0);
+			scoreLabel = new Label(new Point(100, 100), "Score :" + 0);
+			thetaLabel = new Label(new Point(100, 200), "Theta :" + 0);
 			bar = new Bar(new Point(1350, 1200));
 			Button ps = new Button("Pause", new Point(300, 100), new Point(2600, 300));
 			cont = true;
@@ -110,10 +116,8 @@ public class BrickOut {
 						break;
 					else if (i.alive && brickUpdate(i))
 						scoreLabel.label.setText("Score: " + (score += (i instanceof HOSBrick ? 200 : 100)));
-				if (stage < 0) {
-					stage = 0;
+				if (stage < 0)
 					break;
-				}
 				bar.update(ball);
 				thetaLabel.label.setText("Theta :" + Math.atan(ball.velocity.y / ball.velocity.x));
 				sleep(20);
@@ -133,6 +137,7 @@ public class BrickOut {
 						frame.remove(thetaLabel.label);
 						for (Brick i : bricks)
 							frame.remove(i.disBrick);
+						frame.repaint();
 						cont = false;
 					} else {
 						Label winLabel = new Label(new Point(850, 700), new Point(1300, 100),
@@ -148,6 +153,7 @@ public class BrickOut {
 						frame.remove(ball.disBall);
 						frame.remove(scoreLabel.label);
 						frame.remove(thetaLabel.label);
+						frame.repaint();
 						cont = false;
 					}
 			}

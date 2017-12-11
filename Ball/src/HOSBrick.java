@@ -84,6 +84,7 @@ public class HOSBrick extends Brick {
 		if (this.checkCol(BrickOut.ball)) {
 			BrickOut.frame.remove(this.disBrick);
 			BrickOut.frame.remove(this.pair.disBrick);
+			BrickOut.frame.repaint();
 		} else
 			this.disBrick.repaint();
 		return !this.alive;
