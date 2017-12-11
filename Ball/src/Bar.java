@@ -15,7 +15,7 @@ import sun.audio.AudioStream;
 public class Bar {
 	Point size = new Point(300, 50);
 	Point posit;
-	Point move = new Point(20, 0);
+	Point move = new Point(25, 0);
 	JLabel disBar = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("puzzlepack/paddleBlu.png"))
 			.getImage().getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 

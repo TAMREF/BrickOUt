@@ -147,7 +147,7 @@ public class BrickOut {
 		for (stage = 0; stage < maxStage; stage++) {
 			// frame.fill(backSize, 171);
 			Point2D initBallPos = new Point2D(1200, 800);
-			Point2D initBallVel = new Point2D(6.0, -12.0);
+			Point2D initBallVel = new Point2D(10.0, -20.0);
 			ball = new Ball(initBallPos, initBallVel);
 			int score = 0;
 			scoreLabel = new Label(new Point(100, 100), "Score :" + 0);
