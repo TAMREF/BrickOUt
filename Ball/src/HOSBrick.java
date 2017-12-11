@@ -21,6 +21,7 @@ public class HOSBrick extends Brick {
 	}
 
 	public void entangle(HOSBrick B1, HOSBrick B2) {
+		++Pairnum;
 		BufferedImage temp = null;
 		try {
 			temp = ImageIO.read(getClass().getResource("puzzlepack/element_blue_rectangle.png"));
@@ -57,7 +58,6 @@ public class HOSBrick extends Brick {
 		B2.disBrick.repaint();
 		B1.pair = B2;
 		B2.pair = B1;
-		++Pairnum;
 	}
 
 	@Override

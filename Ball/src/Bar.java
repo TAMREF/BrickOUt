@@ -22,8 +22,7 @@ public class Bar {
 	public static void play() {
 		InputStream in = null;
 		try {
-			in = new FileInputStream(
-					"src/kenney_digitalaudio/Audio/tone1.wav");
+			in = new FileInputStream("src/kenney_digitalaudio/Audio/tone1.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

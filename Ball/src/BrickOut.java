@@ -24,7 +24,7 @@ public class BrickOut {
 			bricks = new Brick[10];
 			max[0] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new Brick(new Point2D(400 + i * 220, 200),true);
+				bricks[i] = new Brick(new Point2D(400 + i * 220, 200), true);
 		} else if (stage == 1) {
 			bricks = new SpinBrick[10];
 			max[1] = 1000;
@@ -131,7 +131,7 @@ public class BrickOut {
 						frame.remove(ball.disBall);
 						frame.remove(scoreLabel.label);
 						frame.remove(thetaLabel.label);
-						for(Brick i:bricks)
+						for (Brick i : bricks)
 							frame.remove(i.disBrick);
 						cont = false;
 					} else {
