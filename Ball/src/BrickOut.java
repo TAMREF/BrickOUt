@@ -87,12 +87,12 @@ public class BrickOut {
 		for (stage = 0; stage < maxStage; stage++) {
 			// frame.fill(backSize, 171);
 			Point2D initBallPos = new Point2D(1200, 800);
-			Point2D initBallVel = new Point2D(6.0, -12.0);
+			Point2D initBallVel = new Point2D(9.0, -18.0);
 			ball = new Ball(initBallPos, initBallVel);
 			int score = 0;
 			Label scoreLabel = new Label(new Point(100, 100), "Score :" + 0);
 			Label thetaLabel = new Label(new Point(100, 200), "Theta :" + 0);
-			bar = new Bar(new Point(1350, 1200));
+			bar = new Bar(new Point(1350, 1500));
 			Button ps = new Button("Pause", new Point(300, 100), new Point(2600, 300));
 			cont = true;
 			init();
