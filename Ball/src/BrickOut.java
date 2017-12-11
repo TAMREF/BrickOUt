@@ -11,7 +11,7 @@ public class BrickOut {
 	}
 
 	static Brick[] bricks = new Brick[10];
-	static int[] max = { 1000, 1000, 1000, 1000, 1000 };
+	static int[] max = { 1000, 1000, 1000, 1000, 2000 };
 	static int cnt = 0;
 	static MainFrame frame = new MainFrame("BrickOut", new Point(3000, 2000));
 	static Ball ball = null;
@@ -26,19 +26,64 @@ public class BrickOut {
 			for (int i = 0; i < 10; i++)
 				bricks[i] = new Brick(new Point2D(410 + i * 220, 200), true);
 		} else if (stage == 1) {
-			for (int i = 0; i < 10; i++)
-				bricks[i] = new SpinBrick(new Point2D(410 + i * 220, 200));
+			bricks[0] = new SpinBrick(new Point2D(410, 200));
+			bricks[1] = new MultipleLifeBrick(new Point2D(630, 200));
+			bricks[2] = new HOSBrick(new Point2D(850, 200));
+			bricks[3] = new RefractiveBrick(new Point2D(1070, 200));
+			bricks[4] = new Brick(new Point2D(1290, 200), true);
+			bricks[5] = new SpinBrick(new Point2D(1510, 200));
+			bricks[6] = new MultipleLifeBrick(new Point2D(1730, 200));
+			bricks[7] = new HOSBrick(new Point2D(1950, 200));
+			bricks[8] = new RefractiveBrick(new Point2D(2170, 200));
+			bricks[9] = new Brick(new Point2D(2390, 200), true);
+			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[7]);
 		} else if (stage == 2) {
-			for (int i = 0; i < 10; i++)
-				bricks[i] = new MultipleLifeBrick(new Point2D(410 + i * 220, 200));
+			bricks[0] = new Brick(new Point2D(410, 200), true);
+			bricks[1] = new Brick(new Point2D(630, 440), true);
+			bricks[2] = new HOSBrick(new Point2D(850, 200));
+			bricks[3] = new MultipleLifeBrick(new Point2D(1070, 440));
+			bricks[4] = new SpinBrick(new Point2D(1290, 200));
+			bricks[5] = new HOSBrick(new Point2D(1510, 440));
+			bricks[6] = new MultipleLifeBrick(new Point2D(1730, 200));
+			bricks[7] = new Brick(new Point2D(1950, 440), true);
+			bricks[8] = new Brick(new Point2D(2170, 200), true);
+			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[5]);
 		} else if (stage == 3) {
-			for (int i = 0; i < 10; i++)
-				bricks[i] = new RefractiveBrick(new Point2D(410 + i * 220, 200));
+			bricks[0] = new Brick(new Point2D(2170, 440), true);
+			bricks[1] = new HOSBrick(new Point2D(410, 440));
+			bricks[2] = new HOSBrick(new Point2D(630, 320));
+			bricks[3] = new HOSBrick(new Point2D(850, 200));
+			bricks[4] = new HOSBrick(new Point2D(1070, 320));
+			bricks[6] = new HOSBrick(new Point2D(1290, 440));
+			bricks[7] = new HOSBrick(new Point2D(1510, 320));
+			bricks[8] = new HOSBrick(new Point2D(1730, 200));
+			bricks[9] = new HOSBrick(new Point2D(1950, 320));
+			((HOSBrick) bricks[1]).entangle((HOSBrick) bricks[1], (HOSBrick) bricks[6]);
+			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[7]);
+			((HOSBrick) bricks[3]).entangle((HOSBrick) bricks[3], (HOSBrick) bricks[8]);
+			((HOSBrick) bricks[4]).entangle((HOSBrick) bricks[4], (HOSBrick) bricks[9]);
 		} else if (stage == 4) {
-			for (int i = 0; i < 10; i++)
-				bricks[i] = new HOSBrick(new Point2D(410 + i * 220, 200));
-			for (int i = 0; i < 5; i++)
-				((HOSBrick) bricks[i]).entangle((HOSBrick) bricks[i], (HOSBrick) bricks[9 - i]);
+			bricks = new Brick[20];
+			bricks[0] = new Brick(new Point2D(410, 200), true);
+			bricks[1] = new Brick(new Point2D(410, 320), true);
+			bricks[2] = new Brick(new Point2D(410, 440), true);
+			bricks[3] = new MultipleLifeBrick(new Point2D(630, 320));
+			bricks[4] = new Brick(new Point2D(850, 200), true);
+			bricks[5] = new Brick(new Point2D(850, 320), true);
+			bricks[6] = new Brick(new Point2D(850, 440), true);
+			bricks[7] = new Brick(new Point2D(1050, 200), true);
+			bricks[8] = new MultipleLifeBrick(new Point2D(1050, 320));
+			bricks[9] = new Brick(new Point2D(1050, 440), true);
+			bricks[10] = new Brick(new Point2D(1370, 200), true);
+			bricks[11] = new Brick(new Point2D(1370, 440), true);
+			bricks[12] = new MultipleLifeBrick(new Point2D(1670, 200));
+			bricks[13] = new Brick(new Point2D(1670, 320), true);
+			bricks[14] = new Brick(new Point2D(1670, 440), true);
+			bricks[15] = new MultipleLifeBrick(new Point2D(1890, 440));
+			bricks[16] = new MultipleLifeBrick(new Point2D(2170, 200));
+			bricks[17] = new Brick(new Point2D(2170, 320), true);
+			bricks[18] = new Brick(new Point2D(2170, 440), true);
+			bricks[19] = new MultipleLifeBrick(new Point2D(2390, 440));
 		}
 	}
 
@@ -60,7 +105,16 @@ public class BrickOut {
 		frame.remove(bar.disBar);
 		frame.remove(ball.disBall);
 		for (Brick i : bricks)
-			frame.remove(i.disBrick);
+			if (i instanceof HOSBrick)
+				frame.remove(((HOSBrick) i).disBrick);
+			else if (i instanceof MultipleLifeBrick)
+				frame.remove(((MultipleLifeBrick) i).disBrick);
+			else if (i instanceof RefractiveBrick)
+				frame.remove(((RefractiveBrick) i).disBrick);
+			else if (i instanceof SpinBrick)
+				frame.remove(((SpinBrick) i).disBrick);
+			else
+				frame.remove(i.disBrick);
 		frame.repaint();
 		stage = -1;
 	}
@@ -136,7 +190,16 @@ public class BrickOut {
 						frame.remove(scoreLabel.label);
 						frame.remove(thetaLabel.label);
 						for (Brick i : bricks)
-							frame.remove(i.disBrick);
+							if (i instanceof HOSBrick)
+								frame.remove(((HOSBrick) i).disBrick);
+							else if (i instanceof MultipleLifeBrick)
+								frame.remove(((MultipleLifeBrick) i).disBrick);
+							else if (i instanceof RefractiveBrick)
+								frame.remove(((RefractiveBrick) i).disBrick);
+							else if (i instanceof SpinBrick)
+								frame.remove(((SpinBrick) i).disBrick);
+							else
+								frame.remove(i.disBrick);
 						frame.repaint();
 						cont = false;
 					} else {
