@@ -131,6 +131,8 @@ public class BrickOut {
 						frame.remove(ball.disBall);
 						frame.remove(scoreLabel.label);
 						frame.remove(thetaLabel.label);
+						for (Brick i : bricks)
+							frame.remove(i.disBrick);
 						cont = false;
 					} else {
 						Label winLabel = new Label(new Point(850, 700), new Point(1300, 100),

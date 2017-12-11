@@ -21,8 +21,7 @@ public class Brick {
 	public void play() {
 		InputStream in = null;
 		try {
-			in = new FileInputStream(
-					"src/kenney_digitalaudio/Audio/twoTone2.wav");
+			in = new FileInputStream("src/kenney_digitalaudio/Audio/twoTone2.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
