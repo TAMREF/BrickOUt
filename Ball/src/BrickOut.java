@@ -131,7 +131,11 @@ public class BrickOut {
 						frame.remove(ball.disBall);
 						frame.remove(scoreLabel.label);
 						frame.remove(thetaLabel.label);
+<<<<<<< HEAD
 						for(Brick i:bricks)
+=======
+						for (Brick i : bricks)
+>>>>>>> c05bf9b1c09a4caffdda7552396c28b51a1131cb
 							frame.remove(i.disBrick);
 						cont = false;
 					} else {
