@@ -24,7 +24,7 @@ public class BrickOut {
 			bricks = new Brick[10];
 			max[0] = 1000;
 			for (int i = 0; i < 10; i++)
-				bricks[i] = new Brick(new Point2D(400 + i * 220, 200));
+				bricks[i] = new Brick(new Point2D(400 + i * 220, 200), true);
 		} else if (stage == 1) {
 			bricks = new SpinBrick[10];
 			max[1] = 1000;
@@ -77,7 +77,7 @@ public class BrickOut {
 	public static void main(String args[]) {
 		Point backSize = new Point(100, 100);
 		Point buttonSize = new Point(1200, 100);
-		frame.fill(backSize, 187);
+		frame.fill(backSize, 87);
 		Button st = new Button("Start", buttonSize, new Point(900, 900));
 		while (!st.button.getModel().isPressed())
 			sleep(25);

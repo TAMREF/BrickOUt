@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 public class Background {
 	Point size = new Point(50, 50);
 	Point position;
-	String s1 = "mappack/PNG/mapTile_", s2 = ".png";
+	String s1 = "mappack/PNG/mapTile_0", s2 = ".png";
 	JLabel back = null;
 
 	Background(Point s, Point p, int a) {

@@ -46,11 +46,17 @@ public class Brick {
 	}
 
 	public Brick(Point2D posit) {
+		this(posit, false);
+	}
+
+	public Brick(Point2D posit, boolean self) {
 		this.posit = posit;
 		disBrick.setLocation(posit.topoint());
 		disBrick.setSize(size.x, size.y);
-		BrickOut.frame.add(disBrick, 0);
-		disBrick.repaint();
+		if (self) {
+			BrickOut.frame.add(disBrick, 0);
+			disBrick.repaint();
+		}
 	}
 
 	protected boolean checkYcol(Ball b) { // checks whether velocity.y should be flipped
