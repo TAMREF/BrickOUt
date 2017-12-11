@@ -23,7 +23,7 @@ public class Bar {
 		InputStream in = null;
 		try {
 			in = new FileInputStream(
-					"C:/Users/julia/Desktop/SSHS/2017년 2학기/객체지향프로그래밍/BrickOutProject/BrickOUt/Ball/src/kenney_digitalaudio/Audio/tone1.wav");
+					"src/kenney_digitalaudio/Audio/tone1.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
