@@ -20,6 +20,7 @@ public class BrickOut {
 	static boolean cont = true;
 	static Label scoreLabel;
 	static Label thetaLabel;
+	static Button st;
 
 	public static void init() {
 		if (stage == 0) {
@@ -116,7 +117,7 @@ public class BrickOut {
 			else
 				frame.remove(i.disBrick);
 		frame.repaint();
-		stage = -1;
+		cont = false;
 	}
 
 	public static boolean brickUpdate(Brick i) {
@@ -138,7 +139,8 @@ public class BrickOut {
 		Point backSize = new Point(100, 100);
 		Point buttonSize = new Point(1200, 100);
 		frame.fill(backSize, 87);
-		Button st = new Button("Start", buttonSize, new Point(900, 900));
+		st = new Button("Start", buttonSize, new Point(900, 900));
+		frame.play();
 		while (!st.button.getModel().isPressed())
 			sleep(25);
 		sleep(100);
@@ -167,12 +169,15 @@ public class BrickOut {
 				}
 				ball.update();
 				for (Brick i : bricks)
-					if (stage < 0)
+					if (!cont)
 						break;
 					else if (i.alive && brickUpdate(i))
 						scoreLabel.label.setText("Score: " + (score += (i instanceof HOSBrick ? 200 : 100)));
-				if (stage < 0)
+				if (!cont) {
+					cont = true;
+					stage -= 1;
 					break;
+				}
 				bar.update(ball);
 				thetaLabel.label.setText("Theta :" + Math.atan(ball.velocity.y / ball.velocity.x));
 				sleep(20);

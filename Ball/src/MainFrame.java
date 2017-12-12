@@ -1,10 +1,18 @@
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import sun.audio.ContinuousAudioDataStream;
 
 public class MainFrame extends JFrame implements KeyListener {
 
@@ -56,6 +64,29 @@ public class MainFrame extends JFrame implements KeyListener {
 		for (JLabel[] i : background)
 			for (JLabel j : i)
 				j.repaint();
+	}
+
+	public void play() {
+		InputStream in = null;
+		try {
+			in = new FileInputStream("src/kenney_digitalaudio/Audio/Trick.wav");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		AudioStream audio = null;
+		try {
+			audio = new AudioStream(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ContinuousAudioDataStream loop = null;
+		try {
+			loop = new ContinuousAudioDataStream(audio.getData());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AudioPlayer.player.start(loop);
 	}
 
 	MainFrame() {
