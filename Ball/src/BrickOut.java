@@ -11,7 +11,7 @@ public class BrickOut {
 	}
 
 	static Brick[] bricks = new Brick[10];
-	static int[] max = { 1000, 1000, 1000, 1000, 2000 };
+	static int[] max = { 1000, 1000, 900, 900, 2000 };
 	static int cnt = 0;
 	static MainFrame frame = new MainFrame("BrickOut", new Point(3000, 2000));
 	static Ball ball = null;
@@ -39,17 +39,6 @@ public class BrickOut {
 			bricks[9] = new Brick(new Point2D(2390, 200), true);
 			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[7]);
 		} else if (stage == 2) {
-			bricks[0] = new Brick(new Point2D(410, 200), true);
-			bricks[1] = new Brick(new Point2D(630, 440), true);
-			bricks[2] = new HOSBrick(new Point2D(850, 200));
-			bricks[3] = new MultipleLifeBrick(new Point2D(1070, 440));
-			bricks[4] = new SpinBrick(new Point2D(1290, 200));
-			bricks[5] = new HOSBrick(new Point2D(1510, 440));
-			bricks[6] = new MultipleLifeBrick(new Point2D(1730, 200));
-			bricks[7] = new Brick(new Point2D(1950, 440), true);
-			bricks[8] = new Brick(new Point2D(2170, 200), true);
-			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[5]);
-		} else if (stage == 3) {
 			bricks[0] = new Brick(new Point2D(2170, 440), true);
 			bricks[1] = new HOSBrick(new Point2D(410, 440));
 			bricks[2] = new HOSBrick(new Point2D(630, 320));
@@ -63,27 +52,38 @@ public class BrickOut {
 			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[7]);
 			((HOSBrick) bricks[3]).entangle((HOSBrick) bricks[3], (HOSBrick) bricks[8]);
 			((HOSBrick) bricks[4]).entangle((HOSBrick) bricks[4], (HOSBrick) bricks[9]);
+		} else if (stage == 3) {
+			bricks[0] = new Brick(new Point2D(410, 200), true);
+			bricks[1] = new Brick(new Point2D(630, 440), true);
+			bricks[2] = new HOSBrick(new Point2D(850, 200));
+			bricks[3] = new MultipleLifeBrick(new Point2D(1070, 440));
+			bricks[4] = new SpinBrick(new Point2D(1290, 200));
+			bricks[5] = new HOSBrick(new Point2D(1510, 440));
+			bricks[6] = new MultipleLifeBrick(new Point2D(1730, 200));
+			bricks[7] = new Brick(new Point2D(1950, 440), true);
+			bricks[8] = new Brick(new Point2D(2170, 200), true);
+			((HOSBrick) bricks[2]).entangle((HOSBrick) bricks[2], (HOSBrick) bricks[5]);
 		} else if (stage == 4) {
 			bricks = new Brick[20];
-			bricks[0] = new Brick(new Point2D(410, 200), true);
-			bricks[1] = new Brick(new Point2D(410, 320), true);
-			bricks[2] = new Brick(new Point2D(410, 440), true);
+			bricks[0] = new SpinBrick(new Point2D(410, 200));
+			bricks[1] = new SpinBrick(new Point2D(410, 320));
+			bricks[2] = new SpinBrick(new Point2D(410, 440));
 			bricks[3] = new MultipleLifeBrick(new Point2D(630, 320));
-			bricks[4] = new Brick(new Point2D(850, 200), true);
-			bricks[5] = new Brick(new Point2D(850, 320), true);
-			bricks[6] = new Brick(new Point2D(850, 440), true);
-			bricks[7] = new Brick(new Point2D(1050, 200), true);
+			bricks[4] = new SpinBrick(new Point2D(850, 200));
+			bricks[5] = new SpinBrick(new Point2D(850, 320));
+			bricks[6] = new SpinBrick(new Point2D(850, 440));
+			bricks[7] = new SpinBrick(new Point2D(1050, 200));
 			bricks[8] = new MultipleLifeBrick(new Point2D(1050, 320));
-			bricks[9] = new Brick(new Point2D(1050, 440), true);
-			bricks[10] = new Brick(new Point2D(1370, 200), true);
-			bricks[11] = new Brick(new Point2D(1370, 440), true);
+			bricks[9] = new SpinBrick(new Point2D(1050, 440));
+			bricks[10] = new SpinBrick(new Point2D(1370, 200));
+			bricks[11] = new SpinBrick(new Point2D(1370, 440));
 			bricks[12] = new MultipleLifeBrick(new Point2D(1670, 200));
-			bricks[13] = new Brick(new Point2D(1670, 320), true);
-			bricks[14] = new Brick(new Point2D(1670, 440), true);
+			bricks[13] = new SpinBrick(new Point2D(1670, 320));
+			bricks[14] = new SpinBrick(new Point2D(1670, 440));
 			bricks[15] = new MultipleLifeBrick(new Point2D(1890, 440));
 			bricks[16] = new MultipleLifeBrick(new Point2D(2170, 200));
-			bricks[17] = new Brick(new Point2D(2170, 320), true);
-			bricks[18] = new Brick(new Point2D(2170, 440), true);
+			bricks[17] = new SpinBrick(new Point2D(2170, 320));
+			bricks[18] = new SpinBrick(new Point2D(2170, 440));
 			bricks[19] = new MultipleLifeBrick(new Point2D(2390, 440));
 		}
 	}

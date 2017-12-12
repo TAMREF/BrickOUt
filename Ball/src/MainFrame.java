@@ -69,7 +69,8 @@ public class MainFrame extends JFrame implements KeyListener {
 	public void play() {
 		InputStream in = null;
 		try {
-			in = new FileInputStream("src/kenney_digitalaudio/Audio/Trick.wav");
+			in = new FileInputStream(
+					"src/midis th678/Imperishable Night/th08_01.mid");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -83,7 +84,6 @@ public class MainFrame extends JFrame implements KeyListener {
 		try {
 			loop = new ContinuousAudioDataStream(audio.getData());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		AudioPlayer.player.start(loop);
