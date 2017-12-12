@@ -1,18 +1,16 @@
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
 
 public class MainFrame extends JFrame implements KeyListener {
 
@@ -66,27 +64,30 @@ public class MainFrame extends JFrame implements KeyListener {
 				j.repaint();
 	}
 
-	public void play() {
-		InputStream in = null;
+	public void play(int a) {
+		if (BrickOut.seq.isRunning())
+			BrickOut.seq.stop();
 		try {
-			in = new FileInputStream(
-					"src/midis th678/Imperishable Night/th08_01.mid");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			BrickOut.seq.open();
+		} catch (MidiUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		AudioStream audio = null;
+		InputStream is = null;
+		String s1 = "src/midis th678/Imperishable Night/th08_0", s2 = ".mid";
 		try {
-			audio = new AudioStream(in);
-		} catch (IOException e) {
-			e.printStackTrace();
+			is = new BufferedInputStream(new FileInputStream(new File(s1 + a + s2)));
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
-		ContinuousAudioDataStream loop = null;
 		try {
-			loop = new ContinuousAudioDataStream(audio.getData());
-		} catch (IOException e) {
-			e.printStackTrace();
+			BrickOut.seq.setSequence(is);
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
-		AudioPlayer.player.start(loop);
+		BrickOut.seq.setLoopCount(255);
+		BrickOut.seq.start();
 	}
 
 	MainFrame() {

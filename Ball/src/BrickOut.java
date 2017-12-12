@@ -1,5 +1,9 @@
 import java.awt.Point;
 
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
+
 public class BrickOut {
 	public static void sleep(int cnt) {
 		try {
@@ -21,6 +25,7 @@ public class BrickOut {
 	static Label scoreLabel;
 	static Label thetaLabel;
 	static Button st;
+	static Sequencer seq;
 
 	public static void init() {
 		if (stage == 0) {
@@ -136,17 +141,26 @@ public class BrickOut {
 	}
 
 	public static void main(String args[]) {
+		try {
+			seq = MidiSystem.getSequencer();
+		} catch (MidiUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		frame.play(1);
+		sleep(1200);
 		Point backSize = new Point(100, 100);
 		Point buttonSize = new Point(1200, 100);
 		frame.fill(backSize, 87);
 		st = new Button("Start", buttonSize, new Point(900, 900));
-		frame.play();
 		while (!st.button.getModel().isPressed())
 			sleep(25);
 		sleep(100);
 		st.button.setVisible(false);
 		int maxStage = 5;
 		for (stage = 0; stage < maxStage; stage++) {
+			frame.play(stage + 2);
+			sleep(1500);
 			// frame.fill(backSize, 171);
 			HOSBrick.Pairnum = 0;
 			Point2D initBallPos = new Point2D(1200, 800);
@@ -209,7 +223,8 @@ public class BrickOut {
 						frame.repaint();
 						cont = false;
 					} else {
-						Label winLabel = new Label(new Point(850, 700), new Point(1300, 100),
+						frame.play(7);
+						Label winLabel = new Label(new Point(750, 700), new Point(1500, 100),
 								"Congratulations! You Cleared The Game! Restart?");
 						Button restart = new Button("Restart", new Point(500, 100), new Point(1250, 1000));
 						while (!restart.button.getModel().isPressed())
