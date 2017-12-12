@@ -1,11 +1,16 @@
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -20,7 +25,7 @@ public class MainFrame extends JFrame implements KeyListener {
 	JTextField tfield = new JTextField();
 	static int move = 0;
 	static Point size;
-
+	static Clip clip = null;
 	MainFrame(String Title, Point p) {
 		size = p;
 		setTitle(Title);
@@ -67,26 +72,17 @@ public class MainFrame extends JFrame implements KeyListener {
 	}
 
 	public void play() {
-		InputStream in = null;
+		AudioInputStream in = null;
 		try {
-			in = new FileInputStream(
-					"src/midis th678/Imperishable Night/th08_01.mid");
-		} catch (FileNotFoundException e) {
+			in = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(
+					"C:\\Users\\slugg\\Desktop\\2017\\2017 노예 프로젝트\\휴텍\\BrickOUt\\Ball\\src\\kenney_digitalaudio\\Audio\\Trick.wav")));
+			clip = AudioSystem.getClip();
+			clip.open(in);
+			clip.loop(300000);
+			clip.start();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		AudioStream audio = null;
-		try {
-			audio = new AudioStream(in);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		ContinuousAudioDataStream loop = null;
-		try {
-			loop = new ContinuousAudioDataStream(audio.getData());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		AudioPlayer.player.start(loop);
 	}
 
 	MainFrame() {
