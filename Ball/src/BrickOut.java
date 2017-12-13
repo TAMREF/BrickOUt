@@ -172,11 +172,38 @@ public class BrickOut {
 			init();
 			for (cnt = 0; cont; cnt++) {
 				if (ps.button.getModel().isPressed()) {
-					Button rs = new Button("Resume", buttonSize, new Point(900, 900));
-					while (!rs.button.getModel().isPressed())
+					Button rs = new Button("Resume", new Point(500, 100), new Point(1250, 900));
+					Button restart = new Button("Restart", new Point(500, 100), new Point(1250, 1200));
+					while (!rs.button.getModel().isPressed() && !restart.button.getModel().isPressed())
 						sleep(25);
+					if (restart.button.getModel().isPressed()) {
+						frame.remove(scoreLabel.label);
+						frame.remove(thetaLabel.label);
+						frame.remove(bar.disBar);
+						frame.remove(ball.disBall);
+						for (Brick i : bricks)
+							if (i instanceof HOSBrick)
+								frame.remove(((HOSBrick) i).disBrick);
+							else if (i instanceof MultipleLifeBrick)
+								frame.remove(((MultipleLifeBrick) i).disBrick);
+							else if (i instanceof RefractiveBrick)
+								frame.remove(((RefractiveBrick) i).disBrick);
+							else if (i instanceof SpinBrick)
+								frame.remove(((SpinBrick) i).disBrick);
+							else
+								frame.remove(i.disBrick);
+						frame.repaint();
+						cont = false;
+					}
 					sleep(100);
 					frame.remove(rs.button);
+					frame.remove(restart.button);
+					frame.repaint();
+				}
+				if (!cont) {
+					cont = true;
+					stage -= 1;
+					break;
 				}
 				ball.update();
 				for (Brick i : bricks)
