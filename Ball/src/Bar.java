@@ -1,7 +1,5 @@
 import java.awt.Image;
 import java.awt.Point;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -20,13 +18,7 @@ public class Bar {
 			.getImage().getScaledInstance(size.x, size.y, Image.SCALE_SMOOTH)));
 
 	public static void play() {
-		InputStream in = null;
-		try {
-			in = new FileInputStream("src/kenney_digitalaudio/Audio/tone1.wav");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		InputStream in = Bar.class.getResourceAsStream("kenney_digitalaudio/Audio/tone1.wav");
 		AudioStream audio = null;
 		try {
 			audio = new AudioStream(in);

@@ -1,7 +1,5 @@
 import java.awt.Image;
 import java.awt.Point;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.swing.ImageIcon;
@@ -19,13 +17,7 @@ public class Brick {
 	boolean alive = true;
 
 	public void play() {
-		InputStream in = null;
-		try {
-			in = new FileInputStream("src/kenney_digitalaudio/Audio/twoTone2.wav");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		InputStream in = getClass().getResourceAsStream("kenney_digitalaudio/Audio/twoTone2.wav");
 		AudioStream audio = null;
 		try {
 			audio = new AudioStream(in);
@@ -129,12 +121,10 @@ public class Brick {
 	public boolean update() {
 		if (BrickOut.cnt % 100 == 0)
 			this.goDown();
-		if (checkCol(BrickOut.ball))
-		{
+		if (checkCol(BrickOut.ball)) {
 			BrickOut.frame.remove(this.disBrick);
 			BrickOut.frame.repaint();
-		}
-		else
+		} else
 			this.disBrick.repaint();
 		return !this.alive;
 	}

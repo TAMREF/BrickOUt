@@ -148,7 +148,6 @@ public class BrickOut {
 			e.printStackTrace();
 		}
 		frame.play(1);
-		sleep(1200);
 		Point backSize = new Point(100, 100);
 		Point buttonSize = new Point(1200, 100);
 		frame.fill(backSize, 87);
@@ -160,8 +159,6 @@ public class BrickOut {
 		int maxStage = 5;
 		for (stage = 0; stage < maxStage; stage++) {
 			frame.play(stage + 2);
-			sleep(1500);
-			// frame.fill(backSize, 171);
 			HOSBrick.Pairnum = 0;
 			Point2D initBallPos = new Point2D(1200, 800);
 			Point2D initBallVel = new Point2D(10.0, -20.0);

@@ -2,11 +2,9 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -67,27 +65,25 @@ public class MainFrame extends JFrame implements KeyListener {
 	public void play(int a) {
 		if (BrickOut.seq.isRunning())
 			BrickOut.seq.stop();
+		String s1 = "midis th678/Imperishable Night/th08_0", s2 = ".mid";
 		try {
 			BrickOut.seq.open();
 		} catch (MidiUnavailableException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		InputStream is = null;
-		String s1 = "src/midis th678/Imperishable Night/th08_0", s2 = ".mid";
 		try {
-			is = new BufferedInputStream(new FileInputStream(new File(s1 + a + s2)));
-		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try {
-			BrickOut.seq.setSequence(is);
-		} catch (Exception e1) {
-			e1.printStackTrace();
+			BrickOut.seq.setSequence(new BufferedInputStream(getClass().getResourceAsStream(s1 + a + s2)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
 		}
 		BrickOut.seq.setLoopCount(255);
-		BrickOut.seq.start();
+		try {
+			BrickOut.seq.start();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
 	}
 
 	MainFrame() {
